@@ -1,4 +1,4 @@
-from django.db import admin
+from django.contrib import admin
 from .models import *
 
 
@@ -6,10 +6,10 @@ from .models import *
 class CustomUserInAdmin(admin.ModelAdmin): 
     model = CustomUser
     list_display = ['email','username','is_staff','is_superuser']
-    list_editable = ['username',]
+    list_editable = ['username']
     empty_value_display = '---'
     list_filter = ['first_name','last_name']
-    search_fields = ('username')
+    search_fields = ['username', 'last_name']
     list_per_page = 5
 
 
@@ -17,11 +17,11 @@ class CustomUserInAdmin(admin.ModelAdmin):
 class CustomCustomer(admin.ModelAdmin):
     model = Admin
     list_display = ["id",'email','username','first_name','last_name']
-    list_display_links = ['email']
-    list_editable = ['username']
+    list_display_links = ['username']
+    list_editable = ['first_name','last_name']
     list_filter = ['first_name','last_name']
-    search_fields = ('username', 'last_name')
-    date_hierarchy = 'created_at'
+    search_fields = ['username', 'last_name']
+    # date_hierarchy = 'created_at'
     empty_value_display = '---'
     list_per_page = 5
 
@@ -32,11 +32,11 @@ class CustomCustomer(admin.ModelAdmin):
 @admin.register(Admin)
 class CustomAdmin(admin.ModelAdmin):
     model = Admin
-    list_display = ["id",'email','username','first_name','last_name']
-    list_display_links = ['email']
-    list_editable = ['username']
+    list_display = ["id",'email','username']
+    list_display_links = ['username']
+    # list_editable = ['']
     list_filter = ['first_name','last_name']
-    search_fields = ('username')
+    search_fields = ["username", "last_name"]
     empty_value_display = '---'
     list_per_page = 5
 
@@ -48,10 +48,10 @@ class CustomAdmin(admin.ModelAdmin):
 class CustomManager(admin.ModelAdmin):
     model = Admin
     list_display = ["id",'email','username','first_name','last_name']
-    list_display_links = ['email']
-    list_editable = ['username']
+    list_display_links = ['username']
+    list_editable = ['first_name','last_name']
     list_filter = ['first_name','last_name']
-    search_fields = ('username')
+    # search_fields = ["username", "last_name"]
     empty_value_display = '---'
     list_per_page = 5
 
