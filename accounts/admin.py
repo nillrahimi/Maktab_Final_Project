@@ -1,3 +1,66 @@
-from django.contrib import admin
+from django.db import admin
+from .models import *
 
-# Register your models here.
+
+@admin.register(CustomUser)
+class CustomUserInAdmin(admin.ModelAdmin): 
+    model = CustomUser
+    list_display = ['email','username','is_staff','is_superuser']
+    list_editable = ['username',]
+    empty_value_display = '---'
+    list_filter = ['first_name','last_name']
+    search_fields = ('username')
+    list_per_page = 5
+
+
+@admin.register(Customer)
+class CustomCustomer(admin.ModelAdmin):
+    model = Admin
+    list_display = ["id",'email','username','first_name','last_name']
+    list_display_links = ['email']
+    list_editable = ['username']
+    list_filter = ['first_name','last_name']
+    search_fields = ('username', 'last_name')
+    date_hierarchy = 'created_at'
+    empty_value_display = '---'
+    list_per_page = 5
+
+    def get_queryset(self, request):
+        return Manager.objects.filter(is_staff= False)
+
+
+@admin.register(Admin)
+class CustomAdmin(admin.ModelAdmin):
+    model = Admin
+    list_display = ["id",'email','username','first_name','last_name']
+    list_display_links = ['email']
+    list_editable = ['username']
+    list_filter = ['first_name','last_name']
+    search_fields = ('username')
+    empty_value_display = '---'
+    list_per_page = 5
+
+    def get_queryset(self, request):
+        return Admin.objects.filter(is_superuser = True)
+
+
+@admin.register(Manager)
+class CustomManager(admin.ModelAdmin):
+    model = Admin
+    list_display = ["id",'email','username','first_name','last_name']
+    list_display_links = ['email']
+    list_editable = ['username']
+    list_filter = ['first_name','last_name']
+    search_fields = ('username')
+    empty_value_display = '---'
+    list_per_page = 5
+
+    def get_queryset(self, request):
+        return Manager.objects.filter(is_staff= True, is_superuser = False)
+
+
+
+   
+
+
+
