@@ -16,12 +16,15 @@ class Restaurant(models.Model):
 
 class Branch(models.Model):
     name = models.CharField( max_length=50)
-    restaurant_id = models.ForeignKey(Restaurant,on_delete=models.CASCADE, related_name="restaurant_branch")
-    manager_id = models.ForeignKey("accounts.Manager", on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant,on_delete=models.CASCADE, related_name="restaurant_branch")
+    manager = models.ForeignKey("accounts.Manager", on_delete=models.CASCADE)
     type_category = models.ForeignKey(TypeCategory,on_delete=models.CASCADE)
     city = models.CharField( max_length=50)
     address = models.CharField( max_length=50)
     created_time = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
 
 
 class MealCategory(models.Model):
@@ -44,13 +47,15 @@ class Food(models.Model):
 
 
 class Menu(models.Model):
-    branch_id = models.ForeignKey(Branch, on_delete=models.CASCADE)
-    food_id = models.ForeignKey(Food, on_delete=models.CASCADE,related_name = "food_menu")
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE,related_name = "food_menu")
     remaining = models.IntegerField()
     price = models.IntegerField()
 
+
     def __str__(self):
-        return '{} {}'.format(self.food_id ,self.branch_id)
+        return f"Menu: {self.id}"
+
 
 
 class OrderStatus(models.Model):
@@ -61,22 +66,23 @@ class OrderStatus(models.Model):
 
 
 class Order(models.Model):
-    orderstatus_id = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, related_name='orderstatus_order')
-    customer_id = models.ForeignKey("accounts.Customer", on_delete=models.CASCADE,related_name = "customer_order")
+    order_status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, related_name='orderstatus_order')
+    customer = models.ForeignKey("accounts.Customer", on_delete=models.CASCADE,related_name = "customer_order")
     created_time = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return '{} {}'.format(self.customer_id ,self.orderstatus_id)
+        return '{} {}'.format(self.customer ,self.order_status)
 
 
 class OrderItem(models.Model):
-    menu_id = models.ManyToManyField(Menu, related_name='menu_orderitem')
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
+    menu = models.ManyToManyField(Menu, related_name='menu_orderitem')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     number = models.IntegerField()
     created_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order: {self.id} From: {self.order}"
     
-    def __str__(self) :
-        return '{} {}'.format(self.order_id ,self.menu_id)
         
 
 class Address(models.Model):
@@ -84,9 +90,9 @@ class Address(models.Model):
     street = models.CharField(max_length=50)
     alley =  models.CharField(max_length=50)
     number = models.IntegerField()
-    customer_id = models.ManyToManyField('accounts.Customer', related_name='customer_address')
+    customer = models.ManyToManyField('accounts.Customer', related_name='customer_address')
     def __str__(self):
-        return '{} {}'.format(self.street ,self.customer_id)
+        return '{} {}'.format(self.street ,self.customer)
 
 
 

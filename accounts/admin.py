@@ -15,7 +15,6 @@ class CustomUserInAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomCustomer(admin.ModelAdmin):
-    model = Admin
     list_display = ["id",'email','username','first_name','last_name']
     list_display_links = ['username']
     list_editable = ['first_name','last_name']
@@ -26,16 +25,15 @@ class CustomCustomer(admin.ModelAdmin):
     list_per_page = 5
 
     def get_queryset(self, request):
-        return Manager.objects.filter(is_staff= False)
+        return Customer.objects.filter(is_staff= False)
 
 
 @admin.register(Admin)
 class CustomAdmin(admin.ModelAdmin):
-    model = Admin
     list_display = ["id",'email','username']
     list_display_links = ['username']
     # list_editable = ['']
-    list_filter = ['first_name','last_name']
+    list_filter = ['first_name','last_name'] #status
     search_fields = ["username", "last_name"]
     empty_value_display = '---'
     list_per_page = 5
@@ -46,7 +44,6 @@ class CustomAdmin(admin.ModelAdmin):
 
 @admin.register(Manager)
 class CustomManager(admin.ModelAdmin):
-    model = Admin
     list_display = ["id",'email','username','first_name','last_name']
     list_display_links = ['username']
     list_editable = ['first_name','last_name']
