@@ -18,4 +18,5 @@ class Manager(CustomUser):
 class Customer(CustomUser):
     class Meta:
         proxy = True
+       
 

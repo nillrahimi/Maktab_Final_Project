@@ -59,7 +59,13 @@ class Menu(models.Model):
 
 
 class OrderStatus(models.Model):
-    status = models.CharField( max_length=50)
+    status_choices = [
+    ('orderd', 'Ordered'),
+    ('paid', 'Paid'),
+    ('sent', 'Sent'),
+    ('delivered' , 'Delivered')]
+
+    status = models.CharField(choices=status_choices, default='ordered', max_length=50)
 
     def __str__(self):
         return self.status
