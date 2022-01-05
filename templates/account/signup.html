@@ -11,8 +11,8 @@
 <body>
     <form method="POST">
         {% csrf_token %}
-        {% comment %} {{form.as_p}} {% endcomment %}
-        {{form|crispy}}
+        {{form.as_p}}
+        {% comment %} {{form|crispy}} {% endcomment %}
         <button type='submit'>Sign Up</button>
 </body>
 </html>
