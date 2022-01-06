@@ -1,6 +1,23 @@
 from django.contrib import admin
 from .models import *
 
+from jalali_date import datetime2jalali, date2jalali
+from jalali_date.admin import ModelAdminJalaliMixin
+    
+	
+# @admin.register(Food)
+# class FirstModelAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+# 	list_display = "__all__"
+# 	readonly_fields = ('some_fields', 'date_field',)
+# 	# you can override formfield, for example:
+
+	
+# 	def get_created_jalali(self, obj):
+# 		return datetime2jalali(obj.created).strftime('%y/%m/%d _ %H:%M:%S')
+	
+# 	get_created_jalali.short_description = 'تاریخ ایجاد'
+# 	get_created_jalali.admin_order_field = 'created'
+
 
 admin.site.register(TypeCategory)
 admin.site.register(MealCategory)
@@ -27,27 +44,31 @@ class RestaurantAdmin(admin.ModelAdmin):
     list_per_page = 5
 
 @admin.register(Branch)
-class BranchAdmin(admin.ModelAdmin):
-    list_display = ['name','restaurant', 'manager', 'type_category', 'city', 'created_time']
+class BranchAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ['name','restaurant', 'manager', 'type_category', 'city', 'created_time_jalali']
     list_display_links = ['name']
     # list_editable = []
     list_filter = ['city']
     search_fields = ['name', 'restaurant', 'manager']
-    date_hierarchy = 'created_time'
+    # date_hierarchy = 'created_time'
     empty_value_display = '---'
     list_per_page = 5
+    def created_time_jalali(self, obj):
+        return datetime2jalali(obj.created_time).strftime('%y/%m/%d _ %H:%M:%S')
 
 
 @admin.register(Food)
-class FoodAdmin(admin.ModelAdmin):
-    list_display = ['name', 'created_time']
+class FoodAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ['name', 'created_time_jalali']
     list_display_links = ['name']
     # list_editable = []
     list_filter = ['meal_category', 'type_category']
     search_fields = ['name', 'meal_category', 'type_category']
-    date_hierarchy = 'created_time'
+    # date_hierarchy = 'created_time'
     empty_value_display = '---'
     list_per_page = 5
+    def created_time_jalali(self, obj):
+        return datetime2jalali(obj.created_time).strftime('%y/%m/%d _ %H:%M:%S')
 
 
 @admin.register(Menu)
@@ -71,11 +92,13 @@ class OrderStatusAdmin(admin.ModelAdmin):
 
 
 @admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order', 'number', 'created_time']
+class OrderItemAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ['order', 'number', 'created_time_jalali']
     list_display_links = ['order']
     list_editable = ['number']
     date_hierarchy = 'created_time'
     empty_value_display = '---'
     list_per_page = 5
+    def created_time_jalali(self, obj):
+        return datetime2jalali(obj.created_time).strftime('%y/%m/%d _ %H:%M:%S')
 

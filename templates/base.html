@@ -10,6 +10,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-dark">
     
+    
     <div class="container-fluid">
         <span class="navbar-brand mb-0 h1 text-light">Online Food Ordering!</span>
       
@@ -56,8 +57,13 @@
     </div>
   </nav>
 
+  {% comment %} {% load jalali_tags %}
+  {% now "Y-m-d" as todays_date %}
+  <h3>{{todays_date|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</h3> {% endcomment %}
+
 
   {% block section %}{% endblock section %}
+  {% block section2 %}{% endblock section2 %}
   {% block form %}{% endblock form %}
 
         

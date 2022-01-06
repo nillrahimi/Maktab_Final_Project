@@ -1,5 +1,4 @@
 from django.db import models
-from accounts.models import Manager
 
 
 class TypeCategory(models.Model):
@@ -34,6 +33,7 @@ class MealCategory(models.Model):
 
 
 class Food(models.Model):
+    
     name = models.CharField(max_length=50)
     type_category = models.ForeignKey(TypeCategory, on_delete=models.CASCADE,related_name = "typecategory_food")
     meal_category = models.ManyToManyField(MealCategory,related_name = "mealcategory_food" )

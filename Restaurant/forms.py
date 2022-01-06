@@ -36,5 +36,3 @@ class EditFoodForm(forms.ModelForm):
         model = Food
         fields = '__all__'
 
-
-

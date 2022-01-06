@@ -22,9 +22,30 @@ def superuser_required():
     return wrapper
 
 
+
+#JALALI
+from datetime import date, datetime
+from distutils.version import StrictVersion
+from django.conf import settings
+
+from jalali_date import date2jalali, datetime2jalali
+from django.template import Library
+register = Library()
+DEFAULTS = settings.JALALI_DATE_DEFAULTS
+def my_view(request):
+	jalali_join = datetime2jalali(request.user.date_joined).strftime('%y/%m/%d _ %H:%M:%S')
+
+@register.simple_tag
+def jalali_now(strftime=None):
+    strftime = strftime if strftime else DEFAULTS['Strftime']['datetime']
+    return datetime2jalali(datetime.now()).strftime(strftime)
+
+
+
 class Home(ListView):
     model = Branch
     template_name = 'home.html'
+
 
 #LIST of MENUES
 class MenuList(ListView):

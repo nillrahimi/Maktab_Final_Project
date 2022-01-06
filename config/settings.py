@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'accounts',
     'Restaurant',
     'crispy_forms',
-    'rest_framework'
+    'rest_framework',
+    'jalali_date',
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser' 
 
@@ -163,3 +164,27 @@ MEDIA_ROOT = BASE_DIR/'media/'
 MEDIA_URL =  '/media/'
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
+
+JALALI_DATE_DEFAULTS = {
+   'Strftime': {
+        'date': '%y/%m/%d',
+        'datetime': '%H:%M:%S _ %y/%m/%d',
+    },
+    'Static': {
+        'js': [
+            # loading datepicker
+            'admin/js/django_jalali.min.js',
+            # OR
+            # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.core.js',
+            # 'admin/jquery.ui.datepicker.jalali/scripts/calendar.js',
+            # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc.js',
+            # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc-fa.js',
+            # 'admin/js/main.js',
+        ],
+        'css': {
+            'all': [
+                'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css',
+            ]
+        }
+    },
+}
