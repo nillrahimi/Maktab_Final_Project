@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models.aggregates import Sum
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -6,6 +7,8 @@ from django.views.generic import ListView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from .models import *
 from .forms import *
+from accounts.models import Customer
+from django.db.models import Q
 # from django.utils.decorators import method_decorator
 # from django.contrib.auth.mixins import LoginRequiredMixin
 # from django.contrib.auth import REDIRECT_FIELD_NAME
@@ -41,10 +44,64 @@ def jalali_now(strftime=None):
     return datetime2jalali(datetime.now()).strftime(strftime)
 
 
-
+#HOME PAGE
 class Home(ListView):
     model = Branch
     template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        sold_foods = Food.objects.filter(Q(food_menu__menu_orderitem__order__order_status__status__contains='delivered')|Q(food_menu__menu_orderitem__order__order_status__status__contains='sent')|Q(food_menu__menu_orderitem__order__order_status__status__contains='paid'))
+        most_sold_foods = sold_foods.annotate(final=Sum('food_menu__menu_orderitem__number')).order_by('final')[:10]
+        
+        sold_branches = Branch.objects.filter(Q(menu__menu_orderitem__order__order_status__status__contains='delivered')|Q(menu__menu_orderitem__order__order_status__status__contains='sent')|Q(menu__menu_orderitem__order__order_status__status__contains='paid'))
+        most_sold_branches = sold_branches.annotate(final=Sum('menu__menu_orderitem__number')).order_by('final')[:10]
+           
+        data = super().get_context_data(**kwargs)
+        data['most_sold_foods'] = most_sold_foods
+        data['most_sold_branches'] = most_sold_branches
+        return data
+
+
+
+
+
+
+#Handling
+def food(request, pk):
+    food = Food.objects.get(id=pk)
+
+    if request.method == 'POST':
+        food = Food.objects.get(id=pk)
+        #Get user account information
+        try:
+            customer = request.user.customer	
+        except:
+            device = request.COOKIES['device']
+            customer, created = Food.objects.get_or_create(device=device)
+
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        orderItem, created = OrderItem.objects.get_or_create(order=order, food=food)
+        orderItem.quantity=request.POST['number']
+        orderItem.save()
+
+        return redirect('cart')
+
+    context = {'food':food}
+    return render(request, 'store/product.html', context)
+
+def cart(request):
+    try:
+        customer = request.user.customer
+    except:
+        device = request.COOKIES['device']
+        customer, created = Customer.objects.get_or_create(device=device)
+
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    context = {'order':order}
+    return render(request, 'store/cart.html', context)
+
+
 
 
 #LIST of MENUES

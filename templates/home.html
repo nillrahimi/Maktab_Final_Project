@@ -15,4 +15,13 @@
     {% endfor %}
 
 
+    {% for food in most_sold_foods %}
+    <p>{{food.name}}</p>
+    {% endfor %}
+
+
+    {% for branch in most_sold_branches %}
+    <p>{{branch.name}}</p>
+    {% endfor %}
+
 {% endblock section %}

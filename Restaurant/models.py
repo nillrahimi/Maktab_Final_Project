@@ -60,7 +60,7 @@ class Menu(models.Model):
 
 class OrderStatus(models.Model):
     status_choices = [
-    ('orderd', 'Ordered'),
+    ('ordered', 'Ordered'),
     ('paid', 'Paid'),
     ('sent', 'Sent'),
     ('delivered' , 'Delivered')]
