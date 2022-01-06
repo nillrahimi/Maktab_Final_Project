@@ -4,7 +4,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">ADD FOOD</h5>
+                <h5 class="modal-title center">Add Category</h5>
               </div>
               <div class="modal-body">
               
@@ -15,14 +15,12 @@
                       {{form.as_p}}
                       {% comment %} <button type='submit'>Add</button> {% endcomment %}
                       <div class="modal-footer">
-                      <button type="submit" class="btn btn-secondary" data-dismiss="modal">Add Category</button>
-                      <a href="{% url 'admin_panel' %}" class="btn btn-primary">Close</a>
+                      <button type="submit" class="btn btn-success" data-dismiss="modal">Add Category</button>
+                      <a href="{% url 'admin_panel' %}" class="btn btn-secondary">Close</a>
                       
                       </div>
                   </form>
               </div>
-                
-              
             </div>
           </div>
           

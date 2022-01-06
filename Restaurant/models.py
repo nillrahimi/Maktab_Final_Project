@@ -3,7 +3,7 @@ from accounts.models import Manager
 
 
 class TypeCategory(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     def __str__(self):
         return self.name
 
@@ -15,7 +15,7 @@ class Restaurant(models.Model):
 
 
 class Branch(models.Model):
-    name = models.CharField( max_length=50)
+    name = models.CharField( max_length=50, unique=True)
     restaurant = models.ForeignKey(Restaurant,on_delete=models.CASCADE, related_name="restaurant_branch")
     manager = models.ForeignKey("accounts.Manager", on_delete=models.CASCADE)
     type_category = models.ForeignKey(TypeCategory,on_delete=models.CASCADE)

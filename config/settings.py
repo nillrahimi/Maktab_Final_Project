@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'Restaurant',
     'crispy_forms',
+    'rest_framework'
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser' 
 

@@ -9,7 +9,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">ADD FOOD</h5>
+                <h5 class="modal-title">Add Food</h5>
               </div>
               <div class="modal-body">
               
@@ -20,8 +20,9 @@
                       {{form.as_p}}
                       {% comment %} <button type='submit'>Add</button> {% endcomment %}
                       <div class="modal-footer">
+                      
+                      <button type="submit" class="btn btn-success">Save changes</button>
                       <a href="{% url 'food_list' %}" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                      <button type="submit" class="btn btn-primary">Save changes</button>
                       
                       </div>
                   </form>

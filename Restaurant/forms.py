@@ -24,3 +24,17 @@ class AddCategoryForm(forms.ModelForm):
     class Meta:
         model = TypeCategory
         fields = '__all__'
+
+
+class EditFoodForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EditFoodForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Food
+        fields = '__all__'
+
+
+

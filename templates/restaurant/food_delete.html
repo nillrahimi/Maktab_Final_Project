@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
+
 {% block form %}
-  <br>
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <p>Are you sure ?</p>
-    <button type='submit'>Confirm</button>
-</form>
+<div class="position-relative">
+  <div class="modal-body">
+  <form method="POST">
+      {% csrf_token %}
+      {{form.as_p}}
+      
+          <p>Delete "{{food.name}}"?</p>
+          <button type="submit" class="btn btn-danger btn-sm">Confirm</button>
+          <a href="{% url 'home' %}" class="btn btn-secondary btn-sm" >Close</a>
+          
+  </form>
+  </div>
+  </div>
 {% endblock form %}
