@@ -30,8 +30,12 @@
               Hi {{user.username}}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+              {% if user.is_superuser %}
+              <li><a class="dropdown-item" href="{% url 'admin_panel' %}">Panel</a></li>
+              {% endif %}
               <li><a class="dropdown-item" href="{% url 'account_signup' %}">Change Password</a></li>
+              <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+              
             </ul>
           </li>
           {% else %}

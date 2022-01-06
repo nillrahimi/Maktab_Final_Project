@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+{% block section %}
+          <a  href = "{% url 'add_category' %}" type="button" class="btn btn-primary">Add Category</a>
+          <a  href = "{% url 'food_list' %}" type="button" class="btn btn-primary">Foods List</a>
+{% endblock section %}
 {% block form %}
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -16,7 +20,7 @@
                       {{form.as_p}}
                       {% comment %} <button type='submit'>Add</button> {% endcomment %}
                       <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <a href="{% url 'food_list' %}" class="btn btn-secondary" data-dismiss="modal">Close</a>
                       <button type="submit" class="btn btn-primary">Save changes</button>
                       
                       </div>
@@ -26,8 +30,7 @@
               
             </div>
           </div>
-          <a  href = "{% url 'add_category' %}" type="button" class="btn btn-primary">ADD Category</a>
-          <a  href = "{% url 'food_list' %}" type="button" class="btn btn-primary">food list</a>
+          
         
 
 {% endblock form %}
