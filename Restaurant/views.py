@@ -64,25 +64,27 @@ class Home(ListView):
 
 #Handling Card
 def items(request, pk):
-    food = Menu.objects.get(id = pk)
+    menu = Menu.objects.get(id = pk)
     if request.method == "POST":
-        food = Menu.objects.get(id = pk)
+        menu = Menu.objects.get(id = pk)
         if request.user.is_authenticated :
             customer = request.user
         else:    
             device = request.COOKIES['device']
             customer, created = Customer.objects.get_or_create(device=device, username = device)
-        if food.number >= int(request.POST['number']):
+        if menu.remaining >= int(request.POST['number']):
             status = OrderStatus.objects.get(status = "ordered")
             order, created = Order.objects.get_or_create(customer = customer, order_status =status)
-            orderItem, created = OrderItem.objects.get_or_create(order=order, menu=food, number=1 )
+            
+            orderItem, created = OrderItem.objects.get_or_create(order=order, number=1 ,)
+            # orderItem.menu_orderitem.get_or_create( menu=menu)
             orderItem.number = request.POST['number']
             orderItem.save()
-            return redirect('home')
+            return redirect('cart')
         else:
-            context = {'food':food, 'message':'This Branch Has NOt Enough Foods'}
+            context = {'food':menu, 'message':'This Branch Has Not Enough Foods'}
             return(request,'restaurant/menu_to_card.html',context)    
-    context = {'food':food}
+    context = {'food':menu}
     return render(request,'restaurant/menu_to_card.html', context)
 
 
