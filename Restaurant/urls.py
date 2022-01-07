@@ -12,6 +12,12 @@ urlpatterns = [
     path('admin_panel/food_list/delete_food/<int:pk>/',DeleteFood.as_view(), name = 'delete_food'),
     path('menu_list/<int:pk>/', MenuList.as_view(), name='menu_list'),
     path('admin_panel/food_list/',  FoodList.as_view(), name='food_list'),
+    # path('', store, name="store"),
+	path('cart/', cart, name="cart"),
+    # path('cart/menu_to_cart/', items, name='items'),
+    path("cart/delete_ordered_item/<int:pk>/",DeleteOrderedItem.as_view(),name = 'delete_ordered_item'),
+    path("cart/edit_ordered_item/<int:pk>/",EditOrderedItem.as_view(),name = 'edit_ordered_item'),
+	path('item/<int:pk>/', items, name="items"),
    
     # path('manager_penal/', ManagerPanel.as_view(), name='manager_penal'), 
     # path('customer_panel/', CustomerPanel.as_view(), name='customer_panel'),

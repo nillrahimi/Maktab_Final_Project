@@ -62,45 +62,56 @@ class Home(ListView):
         return data
 
 
-
-
-
-
-#Handling
-def food(request, pk):
-    food = Food.objects.get(id=pk)
-
-    if request.method == 'POST':
-        food = Food.objects.get(id=pk)
-        #Get user account information
-        try:
-            customer = request.user.customer	
-        except:
+#Handling Card
+def items(request, pk):
+    food = Menu.objects.get(id = pk)
+    if request.method == "POST":
+        food = Menu.objects.get(id = pk)
+        if request.user.is_authenticated :
+            customer = request.user
+        else:    
             device = request.COOKIES['device']
-            customer, created = Food.objects.get_or_create(device=device)
-
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        orderItem, created = OrderItem.objects.get_or_create(order=order, food=food)
-        orderItem.quantity=request.POST['number']
-        orderItem.save()
-
-        return redirect('cart')
-
+            customer, created = Customer.objects.get_or_create(device=device, username = device)
+        if food.number >= int(request.POST['number']):
+            status = OrderStatus.objects.get(status = "ordered")
+            order, created = Order.objects.get_or_create(customer = customer, order_status =status)
+            orderItem, created = OrderItem.objects.get_or_create(order=order, menu=food, number=1 )
+            orderItem.number = request.POST['number']
+            orderItem.save()
+            return redirect('home')
+        else:
+            context = {'food':food, 'message':'This Branch Has NOt Enough Foods'}
+            return(request,'restaurant/menu_to_card.html',context)    
     context = {'food':food}
-    return render(request, 'store/product.html', context)
+    return render(request,'restaurant/menu_to_card.html', context)
+
 
 def cart(request):
-    try:
-        customer = request.user.customer
-    except:
+
+    if request.user.is_authenticated :
+        customer = request.user
+        status = OrderStatus.objects.get(status="ordered")
+        order, created = Order.objects.get_or_create(customer=customer, order_status =status)
+    else:  
         device = request.COOKIES['device']
         customer, created = Customer.objects.get_or_create(device=device)
-
-    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        status = OrderStatus.objects.get(status="ordered")
+        order = Order.objects.get(customer=customer, order_status =status)
 
     context = {'order':order}
-    return render(request, 'store/cart.html', context)
+    return render(request, 'restaurant/cart.html', context)
 
+
+class DeleteOrderedItem(DeleteView):
+    model = OrderItem
+    template_name = 'restaurant/delete_ordered_item.html'
+    success_url = reverse_lazy('cart')
+
+class EditOrderedItem(UpdateView):
+    model = OrderItem
+    fields = ('number')
+    template_name = 'restaurant/edit_ordered_item.html'
+    success_url = reverse_lazy('cart')
 
 
 
