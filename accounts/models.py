@@ -31,7 +31,7 @@ class Manager(CustomUser):
         if not self.id :
             self.is_superuser = False
             self.is_staff = True
-        super(Admin, self).save(*args, **kwargs) 
+        super(Manager, self).save(*args, **kwargs) 
 
 class Customer(CustomUser):
     class Meta:
@@ -41,6 +41,6 @@ class Customer(CustomUser):
         if not self.id :
             self.is_superuser = False
             self.is_staff = False
-        super(Admin, self).save(*args, **kwargs) 
+        super(Customer, self).save(*args, **kwargs) 
        
 

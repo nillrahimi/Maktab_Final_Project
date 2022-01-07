@@ -21,9 +21,23 @@ class Branch(models.Model):
     city = models.CharField( max_length=50)
     address = models.CharField( max_length=50)
     created_time = models.DateTimeField(auto_now_add=True)
-    
+    is_primary = models.BooleanField(default=False)
+
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.is_primary:
+            try:
+                temp = Branch.objects.get(is_primary=True)
+                if self != temp:
+                    self.is_primary = False
+                    self.save()
+            except Branch.DoesNotExist:
+                pass
+        super(Branch, self).save(*args, **kwargs)
+
+
 
 
 class MealCategory(models.Model):
@@ -81,7 +95,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    menu = models.ManyToManyField(Menu, related_name='menu_orderitem')
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='menu_orderitem')
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     number = models.IntegerField()
     created_time = models.DateTimeField(auto_now_add=True)
@@ -97,8 +111,21 @@ class Address(models.Model):
     alley =  models.CharField(max_length=50)
     number = models.IntegerField()
     customer = models.ManyToManyField('accounts.Customer', related_name='customer_address')
+    is_primary = models.BooleanField(default=False)
+
     def __str__(self):
         return '{} {}'.format(self.street ,self.customer)
+
+    def save(self, *args, **kwargs):
+        if self.is_primary:
+            try:
+                temp = Address.objects.get(is_primary=True)
+                if self != temp:
+                    self.is_primary = False
+                    self.save()
+            except Address.DoesNotExist:
+                pass
+        super(Address, self).save(*args, **kwargs)
 
 
 

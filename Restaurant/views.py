@@ -51,7 +51,7 @@ class Home(ListView):
 
     def get_context_data(self, **kwargs):
         sold_foods = Food.objects.filter(Q(food_menu__menu_orderitem__order__order_status__status__contains='delivered')|Q(food_menu__menu_orderitem__order__order_status__status__contains='sent')|Q(food_menu__menu_orderitem__order__order_status__status__contains='paid'))
-        most_sold_foods = sold_foods.annotate(final=Sum('food_menu__menu_orderitem__number')).order_by('final')[:10]
+        most_sold_foods = sold_foods.annotate(final=Sum('food_menu__menu_orderitem__number')).order_by('-final')[:10]
         
         sold_branches = Branch.objects.filter(Q(menu__menu_orderitem__order__order_status__status__contains='delivered')|Q(menu__menu_orderitem__order__order_status__status__contains='sent')|Q(menu__menu_orderitem__order__order_status__status__contains='paid'))
         most_sold_branches = sold_branches.annotate(final=Sum('menu__menu_orderitem__number')).order_by('final')[:10]
@@ -71,13 +71,13 @@ def items(request, pk):
             customer = request.user
         else:    
             device = request.COOKIES['device']
-            customer, created = Customer.objects.get_or_create(device=device, username = device)
-        if menu.remaining >= int(request.POST['number']):
+            customer, created = Customer.objects.get_or_create(device=device)
+        if menu.remaining >= int(request.POST['number']) and menu.branch.name:
             status = OrderStatus.objects.get(status = "ordered")
             order, created = Order.objects.get_or_create(customer = customer, order_status =status)
             
-            orderItem, created = OrderItem.objects.get_or_create(order=order, number=1 ,)
-            # orderItem.menu_orderitem.get_or_create( menu=menu)
+            orderItem, created = OrderItem.objects.get_or_create(order=order, number=1 , menu=menu)
+            # orderItem.menu_orderitem.get_or_create( )
             orderItem.number = request.POST['number']
             orderItem.save()
             return redirect('cart')
@@ -89,7 +89,6 @@ def items(request, pk):
 
 
 def cart(request):
-
     if request.user.is_authenticated :
         customer = request.user
         status = OrderStatus.objects.get(status="ordered")
@@ -111,10 +110,9 @@ class DeleteOrderedItem(DeleteView):
 
 class EditOrderedItem(UpdateView):
     model = OrderItem
-    fields = ('number')
     template_name = 'restaurant/edit_ordered_item.html'
     success_url = reverse_lazy('cart')
-
+    fields = ('number',)
 
 
 #LIST of MENUES
@@ -134,7 +132,7 @@ def home_after_login(request):
         return render(request, 'manager_panel.html')
 
     elif not(request.user.is_staff) and not(request.user.is_superuser):
-        return render(request, 'manager_panel.html')
+        return render(request, 'customer_panel.html')
 
 @superuser_required()
 class AdminPanel(CreateView):

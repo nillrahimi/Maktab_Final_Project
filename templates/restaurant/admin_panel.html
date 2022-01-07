@@ -2,9 +2,23 @@
 {% load crispy_forms_tags %}
 
 {% block section %}
-          <a  href = "{% url 'add_category' %}" type="button" class="btn btn-primary">Add Category</a>
-          <a  href = "{% url 'food_list' %}" type="button" class="btn btn-primary">Foods List</a>
+
+    <div class="container">
+      <div class="d-flex justify-content-center">
+      <div class="row p-4" style="width: 30rem;">
+        
+          <ul class="list-group ">
+            <a  href = "{% url 'food_list' %}" type="button" class="btn btn-secondary">Foods List</a>
+            <br>
+            <a  href = "{% url 'add_category' %}" type="button" class="btn btn-secondary">Add Category</a>
+         </ul>
+
+      </div>
+      </div>
+    </div>
+  
 {% endblock section %}
+
 {% block form %}
         <div class="modal-dialog" role="document">
             <div class="modal-content">
