@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block section %}
+
+{% for menu in  object_list %}
+
+  <div class="row row-cols-1 row-cols-md-4 g-4 px-2 m-2">
+    <div class="col">
+      <div class="card bg-dark text-light">
+        <img src="{{menu.food.image.url}}" class="card-img-top h-75" alt="{{menu.food.name}}">
+        <div class="card-body">
+          <h5 class="card-title">{{menu.food.name}}</h5>
+          <p class="card-text">Description: {{menu.food.description}}</p>
+          <small class="card-text">Price: {{menu.price}}</small>
+        </div>
+        <div class="card-footer">
+          
+          <a href="{% url 'items' menu.pk %}" class="btn btn-light btn-sm ">Add to Card</a>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endfor %}
+{% endblock section %}

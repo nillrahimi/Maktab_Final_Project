@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block form %}
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title center">Add Category</h5>
+              </div>
+              <div class="modal-body">
+              
+                  <form method="POST" enctype="multipart/form-data">
+  
+                      {% csrf_token %}
+                      {% comment %} {{form|crispy}} {% endcomment %}
+                      {{form.as_p}}
+                      {% comment %} <button type='submit'>Add</button> {% endcomment %}
+                      <div class="modal-footer">
+                      <button type="submit" class="btn btn-success" data-dismiss="modal">Add Category</button>
+                      <a href="{% url 'admin_panel' %}" class="btn btn-secondary">Close</a>
+                      
+                      </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+          
+        
+
+{% endblock form %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% comment %} {% if  %}{% endif %} {% endcomment %}
+<h1>{{user.username}}'s Cart</h1>
+<div class="d-flex justify-content-center">
+<div class="card bg-dark" style="width: 26rem;">
+	
+	{% for orderitem in order.orderitem_set.all %}
+	
+    <img src="{{orderitem.menu.food.image.url}}" class="card-img-top" alt=''>
+    <div class="card-body">
+      <h5 class="card-title">{{orderitem.menu.food.name}}</h5>
+    </div>
+	<div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Price: {{orderitem.menu.price}} Toman</li>
+	  <li class="list-group-item">Number: {{orderitem.number}}</li>	
+		<a href="{% url 'delete_ordered_item' orderitem.pk %}" class="btn btn-danger btn-sm">Delete</a>
+		<a href="{% url 'edit_ordered_item' orderitem.pk %}" class="btn btn-info btn-sm">Edit</a>
+    </ul>
+    </div>
+	<hr class="divider">
+	{% endfor %}
+    </div>
+
+</div>
+
+
+
+
+{% endblock content %}

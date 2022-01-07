@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block section %}
+  <div class="row row-cols-3 row-cols-md-4  m-3">
+    
+    {% for food in  object_list %}
+    <div class="col">
+      <div class="card h-100  bg-dark text-light">
+        <img src="{{food.image.url}}" class="card-img-top h-50" alt="...">
+        <div class="card-body">
+          <h4 class="card-title">{{food.name}}</h4>
+          <p class="card-text">description:{{food.description}}</p>
+          <br>
+          <a href="{% url 'edit_food'  food.pk%}" class="btn btn-secondary btn-sm">Edit</a>
+          <a href="{% url 'delete_food' food.pk%}" class="btn btn-secondary btn-sm">Delete</a>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">{{food.type_category}}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+
+{% endblock section %}

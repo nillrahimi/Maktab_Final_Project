@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block section %}
+
+    <div class="container">
+      <div class="d-flex justify-content-center">
+      <div class="row p-4" style="width: 30rem;">
+        
+          <ul class="list-group ">
+            <a  href = "{% url 'food_list' %}" type="button" class="btn btn-secondary">Foods List</a>
+            <br>
+            <a  href = "{% url 'add_category' %}" type="button" class="btn btn-secondary">Add Category</a>
+         </ul>
+
+      </div>
+      </div>
+    </div>
+  
+{% endblock section %}
+
+{% block form %}
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add Food</h5>
+              </div>
+              <div class="modal-body">
+              
+                  <form method="POST" enctype="multipart/form-data">
+  
+                      {% csrf_token %}
+                      {% comment %} {{form|crispy}} {% endcomment %}
+                      {{form.as_p}}
+                      {% comment %} <button type='submit'>Add</button> {% endcomment %}
+                      <div class="modal-footer">
+                      
+                      <button type="submit" class="btn btn-success">Save changes</button>
+                      <a href="{% url 'food_list' %}" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                      
+                      </div>
+                  </form>
+              </div>
+                
+              
+            </div>
+          </div>
+          
+        
+
+{% endblock form %}
