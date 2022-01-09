@@ -26,16 +26,16 @@ class Branch(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if self.is_primary:
-            try:
-                temp = Branch.objects.get(is_primary=True)
-                if self != temp:
-                    self.is_primary = False
-                    self.save()
-            except Branch.DoesNotExist:
-                pass
-        super(Branch, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.is_primary:
+    #         try:
+    #             temp = Branch.objects.get(is_primary=True)
+    #             if self != temp:
+    #                 self.is_primary = False
+    #                 self.save()
+    #         except Branch.DoesNotExist:
+    #             pass
+    #     super(Branch, self).save(*args, **kwargs)
 
 
 
@@ -79,7 +79,7 @@ class OrderStatus(models.Model):
     # ('sent', 'Sent'),
     # ('delivered' , 'Delivered')]
     # choices=status_choices,
-    status = models.CharField( max_length=50, default='ordered',)
+    status = models.CharField(max_length=50, default='ordered',)
 
     def __str__(self):
         return self.status
@@ -116,16 +116,16 @@ class Address(models.Model):
     def __str__(self):
         return '{} {}'.format(self.street ,self.customer)
 
-    def save(self, *args, **kwargs):
-        if self.is_primary:
-            try:
-                temp = Address.objects.get(is_primary=True)
-                if self != temp:
-                    self.is_primary = False
-                    self.save()
-            except Address.DoesNotExist:
-                pass
-        super(Address, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.is_primary:
+    #         try:
+    #             temp = Address.objects.get(is_primary=True)
+    #             if self != temp:
+    #                 self.is_primary = False
+    #                 self.save()
+    #         except Address.DoesNotExist:
+    #             pass
+    #     super(Address, self).save(*args, **kwargs)
 
 
 

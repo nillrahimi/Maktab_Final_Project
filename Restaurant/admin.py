@@ -102,3 +102,14 @@ class OrderItemAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     def created_time_jalali(self, obj):
         return datetime2jalali(obj.created_time).strftime('%y/%m/%d _ %H:%M:%S')
 
+
+@admin.register(Order)
+class Order(admin.ModelAdmin):
+    list_display = ["created_time",]
+    # list_display_links = ['street']
+    # list_editable = []
+    # list_filter = ['city']
+    # search_fields = ['street']
+    empty_value_display = '---'
+    list_per_page = 5
+

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'jalali_date',
+    
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser' 
 
@@ -158,7 +160,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True 
 ACCOUNT_UNIQUE_EMAIL = True 
-STATIC_URL = '/static/'
+
 
 MEDIA_ROOT = BASE_DIR/'media/'
 MEDIA_URL =  '/media/'
@@ -188,3 +190,17 @@ JALALI_DATE_DEFAULTS = {
         }
     },
 }
+
+
+MEDIA_ROOT = BASE_DIR/'media/'
+MEDIA_URL =  '/media/'
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    # (BASE_DIR / "static"),
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_ROOT = 'asset'
+
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)

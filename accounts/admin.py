@@ -14,10 +14,18 @@ class CustomUserInAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_filter = ['first_name','last_name']
     search_fields = ['username', 'last_name']
     list_per_page = 5
+    fieldsets = (
+        (None, {
+            "fields": (
+                "password",'email','username',
+                
+            ),
+        }),
+    )
     def created_time_jalali(self, obj):
         return datetime2jalali(obj.created_time).strftime('%y/%m/%d _ %H:%M:%S')
 
-
+#Customer
 @admin.register(Customer)
 class CustomCustomer(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ["id",'email','username','first_name','last_name', 'created_time_jalali']
@@ -28,6 +36,14 @@ class CustomCustomer(ModelAdminJalaliMixin, admin.ModelAdmin):
     # date_hierarchy = 'created_at'
     empty_value_display = '---'
     list_per_page = 5
+    fieldsets = (
+        (None, {
+            "fields": (
+                 'username','email',"password", 'first_name','last_name',
+                
+            ),
+        }),
+    )
 
     def get_queryset(self, request):
         return Customer.objects.filter(is_staff= False)
@@ -35,7 +51,7 @@ class CustomCustomer(ModelAdminJalaliMixin, admin.ModelAdmin):
     def created_time_jalali(self, obj):
         return datetime2jalali(obj.date_joined).strftime('%y/%m/%d _ %H:%M:%S')
 
-
+#Admin
 @admin.register(Admin)
 class CustomAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ["id",'email','username', 'created_time_jalali']
@@ -45,6 +61,15 @@ class CustomAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     search_fields = ["username", "last_name"]
     empty_value_display = '---'
     list_per_page = 5
+    fieldsets = (
+        (None, {
+            "fields": (
+                'username', 'email',"password",
+                
+            ),
+        }),
+    )
+    
 
     def get_queryset(self, request):
         return Admin.objects.filter(is_superuser = True)
@@ -52,7 +77,7 @@ class CustomAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     def created_time_jalali(self, obj):
         return datetime2jalali(obj.date_joined).strftime('%y/%m/%d _ %H:%M:%S')
 
-
+#Manager
 @admin.register(Manager)
 class CustomManager(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ["id",'email','username','first_name','last_name', 'created_time_jalali']
@@ -62,6 +87,14 @@ class CustomManager(ModelAdminJalaliMixin, admin.ModelAdmin):
     # search_fields = ["username", "last_name"]
     empty_value_display = '---'
     list_per_page = 5
+    fieldsets = (
+        (None, {
+            "fields": (
+                'username','email',"password", 'first_name','last_name',
+                
+            ),
+        }),
+    )
 
     def get_queryset(self, request):
         return Manager.objects.filter(is_staff= True, is_superuser = False)

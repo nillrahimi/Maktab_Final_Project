@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models.aggregates import Sum
+from django.db.models import Q
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -7,32 +8,17 @@ from django.views.generic import ListView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from .models import *
 from .forms import *
+from .decorators import *
 from accounts.models import Customer
-from django.db.models import Q
-# from django.utils.decorators import method_decorator
-# from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.contrib.auth import REDIRECT_FIELD_NAME
-# from django.contrib.admin.views.decorators import user_passes_test
-from django.contrib.auth.mixins import UserPassesTestMixin
-
-def superuser_required():
-    def wrapper(wrapped):
-        class WrappedClass(UserPassesTestMixin, wrapped):
-            def test_func(self):
-                return self.request.user.is_superuser
-
-        return WrappedClass
-    return wrapper
+from datetime import date, datetime
+from distutils.version import StrictVersion
+from django.conf import settings
+from jalali_date import date2jalali, datetime2jalali
+from django.template import Library
 
 
 
 #JALALI
-from datetime import date, datetime
-from distutils.version import StrictVersion
-from django.conf import settings
-
-from jalali_date import date2jalali, datetime2jalali
-from django.template import Library
 register = Library()
 DEFAULTS = settings.JALALI_DATE_DEFAULTS
 def my_view(request):
@@ -129,10 +115,10 @@ def home_after_login(request):
         return redirect(reverse('admin_panel'))
 
     elif request.user.is_staff and not(request.user.is_superuser):
-        return render(request, 'manager_panel.html')
+        return redirect(reverse('manager_panel'))
 
     elif not(request.user.is_staff) and not(request.user.is_superuser):
-        return render(request, 'customer_panel.html')
+        return redirect(reverse('manager_panel'))
 
 @superuser_required()
 class AdminPanel(CreateView):

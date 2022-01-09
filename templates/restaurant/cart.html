@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-{% comment %} {% if  %}{% endif %} {% endcomment %}
-<h1>{{user.username}}'s Cart</h1>
+
+<div id="features" class="text-center">
+  {% if user.is_authenticated %}
+  <h2>{{user.username}}'s Cart</h2>
+  {% else %}
+  <h2>Your Cart</h2>
+  {% endif %}
+
+
 <div class="d-flex justify-content-center">
 <div class="card bg-dark" style="width: 26rem;">
 	
@@ -24,6 +31,7 @@
 	{% endfor %}
     </div>
 
+</div>
 </div>
 
 
