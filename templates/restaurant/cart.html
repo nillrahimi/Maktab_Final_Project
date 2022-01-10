@@ -11,9 +11,10 @@
 
 
 <div class="d-flex justify-content-center">
+  {% for orderitem in order.orderitem_set.all %}
 <div class="card bg-dark" style="width: 26rem;">
 	
-	{% for orderitem in order.orderitem_set.all %}
+	
 	
     <img src="{{orderitem.menu.food.image.url}}" class="card-img-top" alt=''>
     <div class="card-body">
@@ -28,9 +29,9 @@
     </ul>
     </div>
 	<hr class="divider">
-	{% endfor %}
-    </div>
 
+    </div>
+    {% endfor %}
 </div>
 </div>
 

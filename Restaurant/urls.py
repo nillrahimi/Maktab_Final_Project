@@ -18,9 +18,9 @@ urlpatterns = [
     path("cart/delete_ordered_item/<int:pk>/",DeleteOrderedItem.as_view(),name = 'delete_ordered_item'),
     path("cart/edit_ordered_item/<int:pk>/",EditOrderedItem.as_view(),name = 'edit_ordered_item'),
 	path('item/<int:pk>/', items, name="items"),
-   
+    path('search/',  search_bar, name='search_bar'),
     # path('manager_penal/', ManagerPanel.as_view(), name='manager_penal'), 
-    # path('customer_panel/', CustomerPanel.as_view(), name='customer_panel'),
+    path('customer_panel/', CustomerPanel.as_view(), name='customer_panel'),
 ]
 
 

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block section %}
+<div id="features" class="text-center">
+    <div class="container">
+      <div class="section-title">
+        <h3>Welcome to Your Panel</h3><h2> {{user.username}}</h2>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-4">
+          <div class="features-item">
+            <h3>List of Your Orders:</h3>
+            {% for orderitem in  object_list %}
+            {% if orderitem.order.customer == user.username %}
+            <ul class="list-group list-group-flush border">
+                <li class="list-group-item" style="color:#556b2f;"> Date: {{orderitem.created_time}}</li>
+                <li class="list-group-item" style="color:#556b2f;">Food: {{orderitem.menu.food}}</li>
+                <li class="list-group-item" style="color:#556b2f;">Number: {{orderitem.number}}</li>
+                <li class="list-group-item" style="color:#556b2f;">Price per Number: {{orderitem.menu.price}}</li>
+            </ul>
+            {% endif %}
+            {% endfor %}
+             
+            
+            {% comment %} <img src= {% static 'img/specials/1.jpg' %}  class="img-responsive" alt="">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sed commodo.</p> {% endcomment %}
+          </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock section %}

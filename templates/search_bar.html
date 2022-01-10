@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% comment %} <div id="features" class="text-center">
+      <div class="features-item">
+          
+        {% if searched %}
+        <h3 class="text-center">You Have Search For: {{searched}}</h3>
+        {% for f in food %}
+        <a href="{% url 'menu_list' f.pk %}">{{f}}</a>
+        {% endfor %}
+        {% else %}
+        <h3 class="text-center">Please Enter a Value!</h3>
+        {% endif %}
+
+    </div>
+</div> {% endcomment %}
+
+
+{% if foods %}
+    <ul>
+        {% for d in foods %}
+        <li>{{ foods.name }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No artists found.</p>
+{% endif %}
+
+{% endblock content %}

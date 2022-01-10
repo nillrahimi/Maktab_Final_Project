@@ -1,4 +1,6 @@
+from django import template
 from django.contrib.auth.decorators import login_required
+from django.db import reset_queries
 from django.db.models.aggregates import Sum
 from django.db.models import Q
 from django.shortcuts import render
@@ -118,7 +120,7 @@ def home_after_login(request):
         return redirect(reverse('manager_panel'))
 
     elif not(request.user.is_staff) and not(request.user.is_superuser):
-        return redirect(reverse('manager_panel'))
+        return redirect(reverse('customer_panel'))
 
 @superuser_required()
 class AdminPanel(CreateView):
@@ -160,10 +162,43 @@ class AddCategory(CreateView):
     success_url = reverse_lazy('admin_panel')
 
 
+@customer_required()
+class CustomerPanel(ListView):
+    model = OrderItem
+    template_name = 'restaurant/customer/customer_panel.html'
 
 
+# def search_bar(request):
+#     if request.method=='POST':
+#         searched = request.POST.get('searched')
+#         food = Food.objects.filter(name__contains=searched)
+#         return render(request, 'search_bar.html', {'searched': searched , 'food': food})
+#     else:
+#         return render(request, 'search_bar.html')
 
 
+  
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 
+def search_bar(request):
+    ctx = {}
+    url_parameter = request.GET.get("q")
+
+    if url_parameter:
+        foods = Food.objects.filter(name__icontains=url_parameter)
+    else:
+        foods = Food.objects.all()
+
+    ctx["foods"] = foods
+    if request.is_ajax():
+
+        html = render_to_string(
+            template_name="search_bar.html", context={"foods": foods}
+        )
+        data_dict = {"html_from_view": html}
+        return JsonResponse(data=data_dict, safe=False)
+
+    return render(request, "search_bar.html", context=ctx)
 

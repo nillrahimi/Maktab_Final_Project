@@ -112,12 +112,11 @@
           <li><a href="{% url 'account_login' %}" class="page-scroll">Login</a></li>
           
           {% endif %}
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-light" type="submit">Search</button>
-          </form>
+
+
         </ul>
-        
+
+
       </div>
       <!-- /.navbar-collapse --> 
     </div>
@@ -127,10 +126,22 @@
   <div class="intro">
     <div class="overlay">
       <div class="container">
+
         <div class="row">
-          <div class="intro-text">
+
+          <div class="intro-text ">
             <h1>Online Restaurant</h1>
-            <p></p>
+            <div class="form-group">
+              <form class="nav  navbar-nav" method="POST" action="{% url 'search_bar' %}">
+                {% csrf_token %}
+                <input class="form-control" id="searchbar" type="text" placeholder="Search Foods & Reataurants" aria-label="Search" name="searched">
+                <button class="btn btn-custom btn-sm" type="submit">Search</button>
+              </form>
+            </div>
+            <br>
+            <br>
+            {% comment %} <p></p> {% endcomment %}
+            
           </div>
         </div>
       </div>
@@ -205,7 +216,8 @@
 <script type="text/javascript" src= {% static "js/jqBootstrapValidation.js" %} ></script> 
 {% comment %} <script type="text/javascript" src= {% static "js/contact_me.js" %} ></script>  {% endcomment %}
 <script type="text/javascript" src= {% static "js/main.js" %} ></script>
-
+<script type="text/javascript" src={% static "js/searchbar.js" %}></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script type="text/javascript">
   function getCookie(name) {
