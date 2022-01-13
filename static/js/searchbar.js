@@ -37,21 +37,18 @@ $( document ).ready(function() {
               
                 $.each(branch, function(i, branch){
                     var li = document.createElement("li");
-                    // var span = document.createElement("span");
+
                     var a = document.createElement("a");
-                    // Create the text node for anchor element.
+
                     var link = document.createTextNode(branch.name);
-                  
-                // Append the text node to anchor element.
                     a.appendChild(link); 
                     
-                    a.href = "{% url 'menurestaurant' branch.id %}"; 
+                    a.href = "{% url 'menu_list' branch.id %}"; 
                     li.append(a)
                     branch_ul_tag.append(li)
                    
                 });
-               
-                
+
             }else{
                 branch_ul_tag.append()
             }
