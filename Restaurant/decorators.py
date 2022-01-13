@@ -10,7 +10,7 @@ def superuser_required():
         return WrappedClass
     return wrapper
 
-def staff_required():
+def manager_required():
     def wrapper(wrapped):
         class WrappedClass(UserPassesTestMixin, wrapped):
             def test_func(self):

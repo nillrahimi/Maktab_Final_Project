@@ -202,5 +202,6 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = 'asset'
 
-import mimetypes
-mimetypes.add_type("text/css", ".css", True)
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+)

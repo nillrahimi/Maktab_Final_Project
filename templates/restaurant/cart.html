@@ -1,16 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
+
+
 {% block content %}
 
 <div id="features" class="text-center">
   {% if user.is_authenticated %}
+  {% if order.orderitem_set.all %}
   <h2>{{user.username}}'s Cart</h2>
+  <form method="POST">
+    {% csrf_token %}
+    
+    <button class="btn btn-success btn-sm" type="submit" value="Add to Cart">Confirm Card</button>
+    <p><label for="id_food_category"> choose Address:</label> <select name="customer_address" class="form-control" required="" id="id_food_category">
+      {% for address in  addresses %}
+      <option>{{address.pk}}_{{address.city}}_{{address.street}}_{{address.number}}</option>
+      {% endfor %}
+    </select></p>
+      <button type="submit" class="btn btn-success">Checkout</button>
+    {%endif%}
+  </form>
+
   {% else %}
   <h2>Your Cart</h2>
+  <a class="btn btn-success btn-sm" href="{% url 'account_login' %}" class="btn btn-success">Login</a>
+  {% endif %}
+
+  {% if msg %}
+  <p>{{msg}}</p>
   {% endif %}
 
 
+
+  <br>
+
+
 <div class="d-flex justify-content-center">
+  {% if order.orderitem_set.all %}
+
   {% for orderitem in order.orderitem_set.all %}
 <div class="card bg-dark" style="width: 26rem;">
 	

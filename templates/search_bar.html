@@ -2,30 +2,16 @@
 
 
 {% block content %}
-{% comment %} <div id="features" class="text-center">
+<div id="features" class="text-center">
       <div class="features-item">
           
-        {% if searched %}
-        <h3 class="text-center">You Have Search For: {{searched}}</h3>
-        {% for f in food %}
-        <a href="{% url 'menu_list' f.pk %}">{{f}}</a>
-        {% endfor %}
-        {% else %}
-        <h3 class="text-center">Please Enter a Value!</h3>
-        {% endif %}
+        <form id='search' method='POST' action='{% url "search_bar" %}'>
+            {% csrf_token %}
+            <input type="text" class="form-control" id="txtSearch" name="txtSearch">
+            <button type="submit" class="btn btn-default btn-submit">Submit</button>
+        </form>
 
     </div>
-</div> {% endcomment %}
+</div>
 
 
-{% if foods %}
-    <ul>
-        {% for d in foods %}
-        <li>{{ foods.name }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No artists found.</p>
-{% endif %}
-
-{% endblock content %}

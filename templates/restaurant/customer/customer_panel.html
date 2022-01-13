@@ -11,14 +11,14 @@
           <div class="features-item">
             <h3>List of Your Orders:</h3>
             {% for orderitem in  object_list %}
-            {% if orderitem.order.customer == user.username %}
+            {% comment %} {% if orderitem.order.customer == user.username %} {% endcomment %}
             <ul class="list-group list-group-flush border">
                 <li class="list-group-item" style="color:#556b2f;"> Date: {{orderitem.created_time}}</li>
                 <li class="list-group-item" style="color:#556b2f;">Food: {{orderitem.menu.food}}</li>
                 <li class="list-group-item" style="color:#556b2f;">Number: {{orderitem.number}}</li>
                 <li class="list-group-item" style="color:#556b2f;">Price per Number: {{orderitem.menu.price}}</li>
             </ul>
-            {% endif %}
+            {% comment %} {% endif %} {% endcomment %}
             {% endfor %}
              
             
@@ -26,6 +26,13 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sed commodo.</p> {% endcomment %}
           </div>
         </div>
+        <div>
+            {% comment %} <a class="btn btn-sm border" href="{% url 'customer_edit_profile' customer.pk %}">Edit Profile</a> {% endcomment %}
+            <br>
+            <a class="btn btn-sm border" href="{% url 'customer_add_address' %}">Add New Address</a>
+
+        </div>
+
     </div>
 </div>
 </div>

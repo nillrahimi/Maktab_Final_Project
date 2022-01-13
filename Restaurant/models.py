@@ -1,5 +1,5 @@
 from django.db import models
-
+import jdatetime
 
 class TypeCategory(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -36,8 +36,6 @@ class Branch(models.Model):
     #         except Branch.DoesNotExist:
     #             pass
     #     super(Branch, self).save(*args, **kwargs)
-
-
 
 
 class MealCategory(models.Model):
@@ -85,6 +83,23 @@ class OrderStatus(models.Model):
         return self.status
 
 
+
+class OrderItem(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='menu_orderitem')
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    number = models.IntegerField()
+    created_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order: {self.id} From: {self.order}"
+
+    @property
+    def get_total(self):
+        foodname = Food.objects.filter(food_menu__menu_orderitem_id=self.id).values_list('food_name')[0][0]
+        total = int(Menu.objects.filter(orderitems__order=self.order).filter(food__food_name=foodname).values_list("price")[0][0]) * self.number
+        return total
+    
+
 class Order(models.Model):
     order_status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, related_name='orderstatus_order')
     customer = models.ForeignKey("accounts.Customer", on_delete=models.CASCADE,related_name = "customer_order")
@@ -93,16 +108,17 @@ class Order(models.Model):
     def __str__(self):
         return '{} {}'.format(self.customer ,self.order_status)
 
+    @property
+    def get_cart_total(self):
+        orderitems = OrderItem.objects.all().filter(order=self.id)
+        total = sum([item.get_total for item in orderitems])
+        return total 
 
-class OrderItem(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='menu_orderitem')
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    number = models.IntegerField()
-    created_time = models.DateTimeField(auto_now_add=True)
+    @property 
+    def created_at_jalali(self):
+        return jdatetime.datetime.fromgregorian(datetime= self.created_time)
 
-    def __str__(self):
-        return f"Order: {self.id} From: {self.order}"
-    
+
         
 
 class Address(models.Model):

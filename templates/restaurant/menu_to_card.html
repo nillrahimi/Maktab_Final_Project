@@ -6,6 +6,7 @@
 
 
 <div id="features" class="text-center">
+  <p>{{message}}</p>
   {% comment %} <div class="container"> {% endcomment %}
     <div class="section-title">
       <h3>Add Item to Card:</h3>
@@ -17,10 +18,13 @@
             <div class="card-body">
               <h5 class="card-title text-light">{{food.food}}</h5>
             </div>
+            {% if message %}
+            <p> {{message}}</p>
+            {% endif %}
             <ul class="list-group list-group-flush">
               <li class="list-group-item">Price: {{food.price}} Toman</li>
             </ul>
-              {{message}}
+              
             <div class="card-body">
               <form method="POST" action="{% url 'items' food.id %}">
                 {% csrf_token %}

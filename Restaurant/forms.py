@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import *
-
+from accounts.models import *
 
 
 class AdminPanelForm(forms.ModelForm):
@@ -35,4 +35,28 @@ class EditFoodForm(forms.ModelForm):
     class Meta:
         model = Food
         fields = '__all__'
+
+
+class EditProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Customer
+        fields = ('username', 'last_name', 'first_name', )
+
+
+
+
+class AddNewAddressForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AddNewAddressForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Address
+        fields = ('city', 'street',  'alley', 'number' , 'is_primary',)
 
