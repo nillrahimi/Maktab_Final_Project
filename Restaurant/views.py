@@ -97,7 +97,7 @@ def items(request, pk):
             customer, created = Customer.objects.get_or_create(device=device)
         
         status = OrderStatus.objects.get(status = "ordered")
-        orders = Order.objects.get(Q(customer=customer)& Q(order_status=status))
+        orders = Order.objects.filter(Q(customer=customer)& Q(order_status=status)).last()
         
         if orders:
             existed_orderitem = OrderItem.objects.filter(order=orders).last()
@@ -107,7 +107,7 @@ def items(request, pk):
             existed_branch = Branch.objects.get(menu__menu_orderitem =existed_orderitem)
 
             if chosen_food in existed_food:
-                context = {'food':menu, 'message':"this item already exist"}
+                context = {'food':menu, 'message':"This Food Already Exist!"}
                 return render(request,'restaurant/menu_to_card.html',context)
 
         if existed_branch and not chosen_branch.name == existed_branch.name:
@@ -301,6 +301,29 @@ class ManagerPanel(TemplateView):
     template_name = 'restaurant/manager/manager_panel.html'
     
 
+@manager_required()
+class EditManagerInfo(UpdateView):
+    model = Manager
+    template_name = 'restaurant/manager/edit_informations.html'    
+    form_class = EditProfileForm
+    success_url = reverse_lazy('manager_panel')
+
+@manager_required()
+class ViewBranchInfo(ListView):
+    model = Branch
+    template_name = 'restaurant/manager/view_branch_info.html'
+    def get_queryset(self, *args, **kwargs):
+        return Branch.objects.filter(manager = self.kwargs['pk']) 
+
+
+
+
+@manager_required()
+class BranchInfo(ListView):
+    model = Branch
+    template_name = 'restaurant\manager_info\show_branch.html'
+    def get_queryset(self, *args, **kwargs):
+        return Branch.objects.filter(manager_restaurant = self.kwargs['pk'])  
 
 
 

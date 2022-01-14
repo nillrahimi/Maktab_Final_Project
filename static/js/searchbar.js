@@ -1,6 +1,6 @@
 $( document ).ready(function() {
 
-    console.log(URL) 
+    // console.log(URL) 
   
     $(".formsearch").on("click", function() {
        

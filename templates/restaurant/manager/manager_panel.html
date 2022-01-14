@@ -2,11 +2,50 @@
 
 
 {% block content %}
+<div id="features" class="text-center">
+    <div class="container">
+      <div class="section-title">
+        <h3>Welcome to Your Panel</h3><h2> {{user.username}}</h2>
+      </div>
+      <div class="row">
 
-<a class="btn btn-secondary">Edit Info</a>
-<a class="btn btn-secondary">View Menu</a>
-<a class="btn btn-secondary">Edit Menu</a>
-<a class="btn btn-secondary">View Orders</a>
+
+        <div class="col-xs-12 col-sm-4">
+            <div class="features-item">
+                <br>
+                <a class="btn btn-secondary" href="{% url 'view_branch_info' user.pk %}">View Branch Informations</a>
+                <hr>
+
+    
+                <a class="btn btn-secondary">View Menu</a>
+                <hr>
+   
+                <a class="btn btn-secondary">View Orders</a>
+            </div>
+        </div>
+        
+
+        <div class="col-xs-12 col-sm-4">
+          <div class="features-item">
+            <h3>Informations:</h3>
+            <p>{{user.email}}</p>
+            <p>{{user.username}}</p>
+
+            <a class="btn btn-secondary" href="{% url 'edit_manager_info' user.pk %}">Edit Info</a>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="features-item">
+
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+</div>
+
 
 
 {% endblock content %}

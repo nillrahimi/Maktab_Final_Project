@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div id="features" class="text-center">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header"> 
+                <div class="section-title text-center">
+                    <h3>Your Branches Are:</h3>
+                    <div class="row">
+                        {% for branch in object_list %}
+                        <div class="col-xs-12 col-sm-8">
+                          <div class="menu-section border">
+                            <h3 class="menu-section-title"> {{branch.restaurant}}</h3>
+                            {% comment %} <div class="menu-item"> {% endcomment %}
+                              <h3 class="menu-item-name">{{branch.name}}</h3>
+                              <div class="menu-item-price">Category : {{branch.branch_category}}</div>
+                              <div class="menu-item-description">Description : {{branch.description}}</div>
+                              <div class="menu-item-description">Address : {{branch.city}},{{branch.address}}</div>
+                              {% if is_primary %}
+                              <p class="card-text">Main Branch</p>
+                              {% endif %}
+                            </div>
+                    {% comment %} {% for branch in object_list %}
+                    <div class="card text-center">
+                        <div class="card-header">
+                        {{branch.restaurant}}
+                        </div>
+                                            
+                        <div class="card-body">
+                            <h3>{{branch.name}}</h3>
+                            <p>Category : {{branch.branch_category}}</p>
+                            <p>Description : {{branch.description}}</p>
+                            <p>Address : {{branch.city}},{{branch.address}}</p>
+                            {% if is_primary %}
+                            <p class="card-text">Main Branch</p>
+                            {% endif %} {% endcomment %}
+
+      
+      {% comment %} <a href="{% url 'edit_branch' branch.pk %}" class="btn btn-primary">Edit Branch</a> {% endcomment %}
+                        </div>
+                        {% comment %} <div class="card-footer text-muted">
+                        {{branch.created_at_jalali.date}}
+                        </div> {% endcomment %}
+                    </div>
+
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
