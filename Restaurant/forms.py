@@ -60,3 +60,14 @@ class AddNewAddressForm(forms.ModelForm):
         model = Address
         fields = ('city', 'street',  'alley', 'number' , 'is_primary',)
 
+
+class EditBranchInformation(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EditBranchInformation, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Branch
+        fields = ('name', 'type_category',  'city', 'address' , 'is_primary',)
+

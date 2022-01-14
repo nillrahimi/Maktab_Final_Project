@@ -32,6 +32,7 @@ urlpatterns = [
     path('manager_penal/', ManagerPanel.as_view(), name='manager_panel'), 
     path('manager_penal/edit_manager_info/<int:pk>/', EditManagerInfo.as_view(), name='edit_manager_info'), 
     path('manager_penal/view_branch_info/<int:pk>/', ViewBranchInfo.as_view(), name='view_branch_info'), 
+    path('manager_penal/edit_branch_info/<int:pk>/', EditBranchInfo.as_view(), name='edit_branch_info'), 
 
 
 

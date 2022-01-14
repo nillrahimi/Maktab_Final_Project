@@ -308,6 +308,7 @@ class EditManagerInfo(UpdateView):
     form_class = EditProfileForm
     success_url = reverse_lazy('manager_panel')
 
+
 @manager_required()
 class ViewBranchInfo(ListView):
     model = Branch
@@ -316,15 +317,20 @@ class ViewBranchInfo(ListView):
         return Branch.objects.filter(manager = self.kwargs['pk']) 
 
 
-
-
 @manager_required()
 class BranchInfo(ListView):
     model = Branch
     template_name = 'restaurant\manager_info\show_branch.html'
     def get_queryset(self, *args, **kwargs):
-        return Branch.objects.filter(manager_restaurant = self.kwargs['pk'])  
+        return Branch.objects.filter(manager_restaurant = self.kwargs['pk']) 
 
+
+@manager_required()
+class EditBranchInfo(UpdateView):
+    model = Branch
+    template_name = 'restaurant/manager/edit_branch_info.html'    
+    form_class = EditBranchInformation
+    success_url = reverse_lazy('manager_panel')
 
 
 
