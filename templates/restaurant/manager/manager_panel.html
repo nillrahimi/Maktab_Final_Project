@@ -13,25 +13,20 @@
         <div class="col-xs-12 col-sm-4">
             <div class="features-item">
                 <br>
-                <a class="btn btn-secondary" href="{% url 'view_branch_info' user.pk %}">View Branch Informations</a>
+                <a class="btn btn-secondary btn-sm" href="{% url 'view_branch_info' user.pk %}" style="background-color:#2980B9;">View Branch Informations</a>
                 <hr>
-
-    
-                <a class="btn btn-secondary">View Menu</a>
+                <a class="btn btn-secondary  btn-sm" href="{% url 'view_branch_menu' user.pk %}" style="background-color:#2980B9;">View Branch Menu</a>
                 <hr>
-   
-                <a class="btn btn-secondary">View Orders</a>
+                <a class="btn btn-secondary  btn-sm" style="background-color:#2980B9;">View Orders</a>
             </div>
         </div>
-        
-
         <div class="col-xs-12 col-sm-4">
           <div class="features-item">
             <h3>Informations:</h3>
             <p>{{user.email}}</p>
             <p>{{user.username}}</p>
 
-            <a class="btn btn-secondary" href="{% url 'edit_manager_info' user.pk %}">Edit Info</a>
+            <a class="btn btn-secondary  btn-sm" href="{% url 'edit_manager_info' user.pk %}" style="background-color:#2980B9;">Edit Info</a>
         </div>
     </div>
     <div class="col-xs-12 col-sm-4">

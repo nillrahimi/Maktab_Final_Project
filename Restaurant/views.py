@@ -36,7 +36,7 @@ def jalali_now(strftime=None):
 
 
 #HOME PAGE______________________________________________________________________________________________________________________
-class Home(ListView):
+class Home(ListView, APIView):
     model = Branch
     template_name = 'home.html'
 
@@ -318,19 +318,57 @@ class ViewBranchInfo(ListView):
 
 
 @manager_required()
-class BranchInfo(ListView):
-    model = Branch
-    template_name = 'restaurant\manager_info\show_branch.html'
-    def get_queryset(self, *args, **kwargs):
-        return Branch.objects.filter(manager_restaurant = self.kwargs['pk']) 
-
-
-@manager_required()
 class EditBranchInfo(UpdateView):
     model = Branch
     template_name = 'restaurant/manager/edit_branch_info.html'    
     form_class = EditBranchInformation
+    success_url = reverse_lazy('view_branch_info')
+
+
+@manager_required()
+class ViewBranchMenu(ListView):
+    model = Menu
+    template_name = 'restaurant/manager/view_branch_menu.html'    
+    def get_queryset(self, *args, **kwargs):
+        return Menu.objects.filter( branch__manager = self.kwargs['pk']) 
+
+
+
+@manager_required()
+class EditBranchMenu(UpdateView):
+    model = Menu
+    form_class = EditBranchMenu
+    template_name = 'restaurant/manager/edit_branch_menu.html'   
+    success_url = reverse_lazy('view_branch_menu') 
+
+
+@manager_required()
+class CreateBranchMenu(CreateView):
+    model = Menu
+    template_name = 'restaurant/manager/create_branch_menu.html'
+    # form_class = CreateBranchMenu
+    success_url = reverse_lazy('view_branch_menu')
+    fields = ("food", "remaining", "price",)
+
+    def form_valid(self, form):
+        branch = Branch.objects.get(manager = self.request.user)
+        obj = form.save(commit=False)
+        obj.branch = branch
+        obj.save()
+
+        return redirect('manager_panel')
+
+@manager_required()
+class DeleteBranchMenu(DeleteView):
+    model = Menu
+    template_name = 'restaurant/manager/delete_branch_menu.html'
+    # fields = '__all__'
     success_url = reverse_lazy('manager_panel')
+
+
+
+
+
 
 
 

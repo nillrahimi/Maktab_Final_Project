@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method = "POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <p>Are You Sure You Want to Delete this Menu?</p>
+    <button class="btn btn-danger">Delete</button>
+    <a href="{% url 'manager_panel' %}" class="btn btn-secondary">Close</a>
+</form>    
+{% endblock content %}

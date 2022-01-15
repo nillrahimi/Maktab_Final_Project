@@ -71,3 +71,26 @@ class EditBranchInformation(forms.ModelForm):
         model = Branch
         fields = ('name', 'type_category',  'city', 'address' , 'is_primary',)
 
+
+class EditBranchMenu(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EditBranchMenu, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Menu
+        fields = ('food', 'remaining',  'price',)
+
+
+class CreateBranchMenu(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CreateBranchMenu, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Menu
+        fields = ('food', 'remaining',  'price',)
+
+

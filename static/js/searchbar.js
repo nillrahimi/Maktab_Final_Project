@@ -34,16 +34,18 @@ $( document ).ready(function() {
             var food = data.foods ;    
            
             if ( branch ){
-              
+                // var p_restaurant = $('#searchbar_result')
+                // p_restaurant.innerText("Restaurant List")
                 $.each(branch, function(i, branch){
                     var li = document.createElement("li");
 
                     var a = document.createElement("a");
 
-                    var link = document.createTextNode(branch.name);
-                    a.appendChild(link); 
+                    var text = document.createTextNode(branch.name);
+                    a.appendChild(text); 
                     
-                    a.href = "{% url 'menu_list' branch.id %}"; 
+                    // a.href = "{% url 'menu_list' branch.id %}"; 
+                    a.href = `http://127.0.0.1:8000/menu_list/${branch.id}`;
                     li.append(a)
                     branch_ul_tag.append(li)
                    
