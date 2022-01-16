@@ -2,15 +2,24 @@
 {% load static %}
 
 
-
 {% block section %}
 
 
 <!-- Features Section -->
-<p id="Searchbar_result"></p>
-<ul id="branch_ul"></ul>
-<ul id="food_ul"></ul>
-
+<div id="searchBarContainer">
+  <div class="form-group">
+    <input class="form-control" id="text_search" type="text" placeholder="Search Foods & Reataurants" aria-label="Search" name="searched">
+    <button class="btn btn-custom btn-sm formsearch" type="button">Search</button>
+  </div>
+  
+  <div id="searchbar_result" class="menu-item-name" style="display:none; text-align: center">
+    <p>Restaurants List Matching Your Search: </p>
+    <ul id="branch_ul" class="p-0"></ul>
+    <p>Foods List Matching Your Search: </p>
+    <ul id="food_ul" class="p-0"></ul>
+  </div>
+</div>
+  
 <div id="features" class="text-center">
   <div class="container">
     <div class="section-title">

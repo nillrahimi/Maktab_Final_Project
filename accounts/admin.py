@@ -8,7 +8,7 @@ from jalali_date.admin import ModelAdminJalaliMixin
 @admin.register(CustomUser)
 class CustomUserInAdmin(ModelAdminJalaliMixin, admin.ModelAdmin): 
     model = CustomUser
-    list_display = ['email','username','is_staff','is_superuser']
+    list_display = ['email','username','is_staff','is_superuser', 'device',]
     list_editable = ['username']
     empty_value_display = '---'
     # list_filter = ['first_name','last_name']
@@ -36,7 +36,7 @@ class CustomUserInAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
 #Customer
 @admin.register(Customer)
 class CustomCustomer(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ["id",'email','username','first_name','last_name', 'created_time_jalali']
+    list_display = ["id",'email','username','first_name','last_name', 'created_time_jalali','device',]
     list_display_links = ['username']
     list_editable = ['first_name','last_name']
     # list_filter = ['first_name','last_name']
@@ -68,7 +68,7 @@ class CustomCustomer(ModelAdminJalaliMixin, admin.ModelAdmin):
 #Admin
 @admin.register(Admin)
 class CustomAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ["id",'email','username', 'created_time_jalali']
+    list_display = ["id",'email','username', 'created_time_jalali', 'device',]
     list_display_links = ['username']
     # list_editable = ['']
     # list_filter = ['first_name','last_name'] #status
@@ -97,7 +97,7 @@ class CustomAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
 #Manager
 @admin.register(Manager)
 class CustomManager(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ["id",'email','username','first_name','last_name', 'created_time_jalali']
+    list_display = ["id",'email','username','first_name','last_name', 'created_time_jalali', 'device',]
     list_display_links = ['username']
     list_editable = ['first_name','last_name']
     # list_filter = ['first_name','last_name']

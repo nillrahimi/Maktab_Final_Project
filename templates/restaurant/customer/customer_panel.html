@@ -9,27 +9,14 @@
       <div class="row">
         <div class="col-xs-12 col-sm-4">
           <div class="features-item">
-            <h3>List of Your Orders:</h3>
-            {% for orderitem in  object_list %}
-            {% comment %} {% if orderitem.order.customer == user.username %} {% endcomment %}
-            <ul class="list-group list-group-flush border">
-                <li class="list-group-item" style="color:#556b2f;"> Date: {{orderitem.created_time}}</li>
-                <li class="list-group-item" style="color:#556b2f;">Food: {{orderitem.menu.food}}</li>
-                <li class="list-group-item" style="color:#556b2f;">Number: {{orderitem.number}}</li>
-                <li class="list-group-item" style="color:#556b2f;">Price per Number: {{orderitem.menu.price}}</li>
-            </ul>
-            {% comment %} {% endif %} {% endcomment %}
-            {% endfor %}
-             
-            
-            {% comment %} <img src= {% static 'img/specials/1.jpg' %}  class="img-responsive" alt="">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sed commodo.</p> {% endcomment %}
           </div>
+
         </div>
         <div>
             {% comment %} <a class="btn btn-sm border" href="{% url 'customer_edit_profile' customer.pk %}">Edit Profile</a> {% endcomment %}
             <br>
-            <a class="btn btn-sm border" href="{% url 'customer_add_address' %}">Add New Address</a>
+            <a class="btn btn-sm border" href="{% url 'customer_view_address' user.pk %}">View Addresses</a>
+            <a class="btn btn-sm border" href="{% url 'customer_orders' user.pk %}">View Your Orders</a>
 
         </div>
 

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block section %}
+<div id="features" class="text-center">
+    <div class="container">
+      <div class="section-title d-flex justify-content-center">
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-4">
+          <div class="features-item">
+            <h3>List of Your Orders:</h3>
+            {% for order in  object_list %}
+            <ul class="list-group list-group-flush border">
+                <li class="list-group-item" style="color:#556b2f;">Status: {{order.order_status}}</li>
+                <a class="list-group-item" style="color:#556b2f;" href="{% url 'customer_orderitems' order.pk%}"> Date: {{order.created_time}}</a>
+                
+                {% comment %} <li class="list-group-item" style="color:#556b2f;">Number: {{orderitem.number}}</li>
+                <li class="list-group-item" style="color:#556b2f;">Price per Number: {{orderitem.menu.price}}</li> {% endcomment %}
+            </ul>
+            {% endfor %}
+            </div>
+            <a class="list-group-item" style="color:#556b2f;" href="{% url 'customer_panel' %}"> Back to Panel</a>
+
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock section %}

@@ -200,9 +200,25 @@ header .intro-text {
 	padding-bottom: 50px;
 	text-align: center;
 }
+
+#searchBarContainer {
+	max-width: 600px;
+    margin: auto;
+    margin-top: 24px;
+}
+#searchBarContainer .form-group {
+	text-align: center;
+}
+#searchBarContainer .form-group button {
+	border-radius: 8px;
+	width: 120px;
+    height: 42px;
+    padding: 0;
+}
+
 /* Features Section */
 #features {
-	padding: 120px 0;
+	padding:60px 0;
 }
 #features .features-item {
 	margin: 0 20px;

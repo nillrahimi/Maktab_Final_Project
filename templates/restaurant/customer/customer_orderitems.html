@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block section %}
+<div id="features" class="text-center">
+    <div class="container">
+      <div class="section-title  d-flex justify-content-center">
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-4">
+          <div class="features-item">
+            <h3>List of Your Order Items:</h3>
+            {% for orderitem in  object_list %}
+            <ul class="list-group list-group-flush border">
+                <li class="list-group-item" style="color:#556b2f;">Food : {{orderitem.menu.food.name}}</li>
+                <li class="list-group-item" style="color:#556b2f;"> Date: {{order.created_time}}</li>
+                <li class="list-group-item" style="color:#556b2f;">Number: {{orderitem.number}}</li>
+                <li class="list-group-item" style="color:#556b2f;">Price per Number: {{orderitem.menu.price}}</li>
+            </ul>
+            {% endfor %}
+            </div>
+            <a class="list-group-item" style="color:#556b2f;" href="{% url 'customer_orders' user.pk %}"> Back to Orders</a>
+
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock section %}

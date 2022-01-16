@@ -1,30 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="section-title text-center">
-    <h2 class="menu-item-name">Your Menues Are:</h2>
+    <h2 class="menu-item-name">Your Menu:</h2>
   <div id="features" class="text-center d-flex justify-content-center">
     <div class="container">
-      <div class="row">
+      <div class="row justify-content-center">
         {% if object_list %}
         {% for item in object_list %}
-        <div class="col-xs-12 col-sm-12 border" Style="background-color:#E5E7E9;">
+        <div class="col-xs-12 col-sm-8 border" Style="background-color:#E5E7E9;">
           <div class="features-item">
-            {% comment %} <p class="card-text">Branch Name : {{object_list.0.branch}}</p> {% endcomment %}
-            <div class="col-xs-4 col-sm-4  border">
-              
-                <div class="features-item center">
-                  <h3>{{item.food.name}}</h3>
-                  <img src=" {{item.food.image.url}}"  class="img-responsive "  alt="{{item.food.name}}">
-                  <p>Descriptions: {{item.food.description}}</p>
-                  <small class="card-text">Price: {{item.price}}</small>
-                  <hr>
-                </div>
-                  <div>
-                    <a href="{% url 'edit_branch_menu' item.pk %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Edit Branch Menu</a>   
-                    <a href="{% url 'delete_branch_menu' item.pk %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Delete Branch Menu</a>
-                  </div>
-                  <br>
-            </div>
+              <h3>{{item.food.name}}</h3>
+              <img src=" {{item.food.image.url}}"  class="img-responsive "  alt="{{item.food.name}}">
+              <p>Descriptions: {{item.food.description}}</p>
+              <small class="card-text">Price: {{item.price}}</small>
+              <hr>
+              <div>
+                <a href="{% url 'edit_branch_menu' item.pk %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Edit Branch Menu</a>   
+                <a href="{% url 'delete_branch_menu' item.pk %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Delete Branch Menu</a>
+              </div>
+              <br>      
             </div>
         </div>
         {% endfor %}
@@ -33,9 +27,8 @@
         {% endif %}
       </div>
       <br>
-      <a href="{% url 'manager_panel'  %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Back to Panel</a>
+      <a href="{% url 'manager_panel' %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Back to Panel</a>
       <a href="{% url 'create_branch_menu' %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Add New Menu</a>
-    
     </div>
 </div>
 </div>

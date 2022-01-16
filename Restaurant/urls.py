@@ -27,8 +27,13 @@ urlpatterns = [
 
     path('customer_panel/', CustomerPanel.as_view(), name='customer_panel'),
     path('customer_panel/edit_profile/<int:pk>/', CustomerEditProfile.as_view(), name='customer_edit_profile'),
-    path('customer_panel/add_address/', CustomerAddAddress.as_view(), name='customer_add_address'),
+    path('customer_panel/add_address/<int:pk>/', CustomerAddAddress.as_view(), name='customer_add_address'),
+    path('customer_panel/view_address/<int:pk>/', CustomerViewAddress.as_view(), name='customer_view_address'),
+    path('customer_panel/edit_address/<int:pk>/', CustomerEditAddress.as_view(), name='customer_edit_address'),
+    path('customer_panel/delete_address/<int:pk>/', CustomerDeleteAddress.as_view(), name='customer_delete_address'),
 
+    path('customer_panel/orders/<int:pk>', CustomerOrders.as_view(), name='customer_orders'),
+    path('customer_panel/orderitems/<int:pk>', CustomerOrderItems.as_view(), name='customer_orderitems'),
 
     path('manager_penal/', ManagerPanel.as_view(), name='manager_panel'), 
     path('manager_penal/edit_manager_info/<int:pk>/', EditManagerInfo.as_view(), name='edit_manager_info'), 
@@ -39,6 +44,11 @@ urlpatterns = [
     # path('manager_penal/create_branch_menu/<int:pk>/', CreateBranchMenu.as_view(), name='create_branch_menu'),
     path('manager_penal/create_branch_menu/', CreateBranchMenu.as_view(), name='create_branch_menu'),
     path('manager_penal/delete_branch_menu/<int:pk>/', DeleteBranchMenu.as_view(), name='delete_branch_menu'),
+    path('manager_penal/delete_branch_menu/<int:pk>/', DeleteBranchMenu.as_view(), name='delete_branch_menu'),
+    path('manager_penal/view_orders/<int:pk>/', ViewOrders.as_view(), name='delete_branch_menu'),
+
+
+    path('foods/<int:pk>/', Foods.as_view(), name='foods'),
 
 
 ]

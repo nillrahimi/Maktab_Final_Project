@@ -10,7 +10,7 @@ class CustomUser(AbstractUser):
         ("Customer","Customer"),
     ] 
     role = models.CharField(choices= role_choices,default="Customer", max_length=9)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True,  null = True, blank = True)
     device = models.CharField(max_length=50, null = True, blank = True)
 
     

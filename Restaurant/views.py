@@ -78,6 +78,11 @@ class Home(ListView, APIView):
         return render(request,'home.html')   
 
 
+class Foods(ListView):
+    model = Food
+    template_name = 'restaurant/foods.html'    
+    def get_queryset(self, *args, **kwargs):
+        return Food.objects.filter( name = self.kwargs['pk']) 
 
 
 #Handling Card__________________________________________________________________________________________________________
@@ -94,7 +99,7 @@ def items(request, pk):
             customer = request.user
         else:    
             device = request.COOKIES['device']
-            customer, created = Customer.objects.get_or_create(device=device)
+            customer, created = Customer.objects.get_or_create(device=device, username = device)
         
         status = OrderStatus.objects.get(status = "ordered")
         orders = Order.objects.filter(Q(customer=customer)& Q(order_status=status)).last()
@@ -111,7 +116,6 @@ def items(request, pk):
                 return render(request,'restaurant/menu_to_card.html',context)
 
         if existed_branch and not chosen_branch.name == existed_branch.name:
-            #if not selected_branch.name == existed_branch.name:
             context = {'food':menu, 'message':"Please either Choose from One Branch Or Make Your Card Empty First"}
             return render(request,'restaurant/menu_to_card.html',context)
         
@@ -121,7 +125,6 @@ def items(request, pk):
                 order, created = Order.objects.get_or_create(customer = customer, order_status =status)
                 
                 orderItem, created = OrderItem.objects.get_or_create(order=order, number=1 , menu=menu)
-                # orderItem.menu_orderitem.get_or_create( )
                 orderItem.number = request.POST['number']
                 orderItem.save()
                 return redirect('cart')
@@ -134,19 +137,15 @@ def items(request, pk):
 
 def cart(request):
     if request.method == "POST":
-        customer_address = request.POST.get("customer_address")
-        pk,city,street,number =customer_address.split("_")
-
-        choosen_address = Address.objects.get(pk = pk)
 
         customer = request.user
         status = OrderStatus.objects.get(status = "ordered")
-        new_status = OrderStatus.objects.get(status = "complete")
+        new_status = OrderStatus.objects.get(status = "paid")
         order= Order.objects.filter(customer=customer, order_status =status).update(order_status=new_status)
-        msg = "successfull"
+        msg = "Successfull"
         return render(request,'restaurant/cart.html',{"msg":msg})
 
-    addresses=''
+
 
         # device = request.COOKIES['device']
         # status = OrderStatus.objects.get(order_status = "ordered")
@@ -161,6 +160,11 @@ def cart(request):
         #             branch_order_item_device= Branch.objects.get(menu_menu_orderitem_order = order_items_device.last().order)
         #             print(branch_order_item_device)
 
+
+        # customer_address = request.POST.get("customer_address")
+        # pk,city,street,number =customer_address.split(",")
+        # choosen_address = Address.objects.get(pk = pk)
+
     if request.user.is_authenticated :
         addresses = Address.objects.filter(customer = request.user)
         customer = request.user
@@ -168,7 +172,7 @@ def cart(request):
         order, created = Order.objects.get_or_create(customer=customer, order_status =status)
 
         device = request.COOKIES['device']
-        customer_device = Customer.objects.filter(device=device).last()
+        customer_device = Customer.objects.filter(device=device, username= device).last()
         
         if customer_device:
             order_device = Order.objects.filter(customer=customer_device, order_status =status).last()
@@ -181,10 +185,12 @@ def cart(request):
                     order = Order.objects.filter(customer = customer , order_status = status).last()
     
     else:  
+        addresses=''  
         device = request.COOKIES['device']
-        customer, created = Customer.objects.get_or_create(device=device)
+        customer, created = Customer.objects.get_or_create(device=device, username= device)
+        print("meooooooooooooooooooooooooooooooooooooooooowwwwwwwwwwwwwwwwww",customer)
         status = OrderStatus.objects.get(status="ordered")
-        order, created = Order.objects.get(customer=customer, order_status =status)
+        order, created = Order.objects.get_or_create(customer=customer, order_status =status)
 
     context = {'order':order, "addresses":addresses}
     return render(request, 'restaurant/cart.html', context)
@@ -273,9 +279,24 @@ class AddCategory(CreateView):
 #CUSTOMER PANEL________________________________________________________________________________
 #Customer Panel: list of orderitems
 @customer_required()
-class CustomerPanel(ListView):
-    model = OrderItem
+class CustomerPanel(TemplateView):
     template_name = 'restaurant/customer/customer_panel.html'
+
+
+@customer_required()
+class CustomerOrders(ListView):
+    model = Order
+    template_name = 'restaurant/customer/customer_orders.html'
+    def get_queryset(self, *args, **kwargs):
+        return Order.objects.filter(customer = self.kwargs['pk']) 
+
+@customer_required()
+class CustomerOrderItems(ListView):
+    model = OrderItem
+    template_name = 'restaurant/customer/customer_orderitems.html'
+    def get_queryset(self, *args, **kwargs):
+        return OrderItem.objects.filter(order = self.kwargs['pk']) 
+
 
 
 #Customer Panel: Edit Profile
@@ -288,9 +309,41 @@ class CustomerEditProfile(UpdateView):
 
 
 @customer_required()
+class CustomerViewAddress(ListView):
+    model = Address
+    template_name = 'restaurant/customer/customer_view_address.html'
+    success_url = reverse_lazy('customer_panel')
+    def get_queryset(self, *args, **kwargs):
+        return Address.objects.filter(customer = self.kwargs['pk']) 
+
+
+@customer_required()
 class CustomerAddAddress(CreateView):
     model = Address
-    template_name = 'restaurant/customer/add_address.html'
+    template_name = 'restaurant/customer/customer_add_address.html'
+    form_class = AddNewAddressForm
+    success_url = reverse_lazy('customer_panel')
+
+    def form_valid(self, form):
+        customer = Customer.objects.get(pk = self.request.user.pk)
+        obj = form.save(commit=False)
+        obj.customer = customer
+        obj.save()
+        return redirect('customer_panel')
+
+
+@customer_required()
+class CustomerDeleteAddress(DeleteView):
+    model = Address
+    template_name = 'restaurant/customer/customer_delete_address.html'
+    # form_class = AddNewAddressForm
+    success_url = reverse_lazy('customer_panel')
+
+
+@customer_required()
+class CustomerEditAddress(UpdateView):
+    model = Address
+    template_name = 'restaurant/customer/customer_edit_address.html'
     form_class = AddNewAddressForm
     success_url = reverse_lazy('customer_panel')
 
@@ -367,8 +420,12 @@ class DeleteBranchMenu(DeleteView):
 
 
 
-
-
+@manager_required
+class ViewOrders(ListView):
+    model = Order
+    template_name = 'restaurant/manager/manager_view_orders.html'
+    def get_queryset(self, *args, **kwargs):
+        return Order.objects.filter( orderitem__menu_branch= self.kwargs['pk'])
 
 
 
@@ -388,12 +445,6 @@ class DeleteBranchMenu(DeleteView):
 #         data = 'fail'
 #     mimetype = 'application/json'
 #     return HttpResponse(data, mimetype)
-
-
-
-
-
-
 
 
 #Registerations_________________________________________________________________________________________________________________________
