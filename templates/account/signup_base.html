@@ -1,14 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-<br>
-<br>
-<ul class="list-group">
-    <li class="list-group-item">Choose Your Role:</li>
+<div id="features" class="text-center d-flex justify-content-center">
   
-    
-    <li class="list-group-item list-group-item-primary"><a href="{% url 'signup_admin' %}"> Signup Admin</a></li>
-    <li class="list-group-item list-group-item-success"><a href="{% url 'signup_manager' %}"> Signup Manager</a></li>
-    <li class="list-group-item list-group-item-info"><a href="{% url 'signup_customer' %}"> Signup Customer</a></li>
-  
-  </ul>
+  <div class="features-item">
+    <h3>Choose Your Role:</h3>
+    <ul class="list-group">
+      
+      
+        
+        <li class="list-group-item" style=" background-color:#f5f5f5 "><a href="{% url 'signup_admin' %}"> Signup Admin</a></li>
+        <li class="list-group-item" style=" background-color:#f5f5f5 "><a href="{% url 'signup_manager' %}"> Signup Manager</a></li>
+        <li class="list-group-item" style=" background-color:#f5f5f5 "><a href="{% url 'signup_customer' %}"> Signup Customer</a></li>  
+    </ul>
+  </div>
+</div>
+
 {% endblock content %}

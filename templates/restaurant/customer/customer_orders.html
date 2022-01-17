@@ -12,7 +12,8 @@
             {% for order in  object_list %}
             <ul class="list-group list-group-flush border">
                 <li class="list-group-item" style="color:#556b2f;">Status: {{order.order_status}}</li>
-                <a class="list-group-item" style="color:#556b2f;" href="{% url 'customer_orderitems' order.pk%}"> Date: {{order.created_time}}</a>
+                <a class="list-group-item" style="color:#556b2f;" href="{% url 'customer_orderitems' order.pk%}"> Date: {{order.created_at_jalali}}</a>
+                <li class="list-group-item" style="color:#556b2f;">Total Price: {{order.get_cart_total}}</li>
                 
                 {% comment %} <li class="list-group-item" style="color:#556b2f;">Number: {{orderitem.number}}</li>
                 <li class="list-group-item" style="color:#556b2f;">Price per Number: {{orderitem.menu.price}}</li> {% endcomment %}

@@ -45,14 +45,14 @@ urlpatterns = [
     path('manager_penal/create_branch_menu/', CreateBranchMenu.as_view(), name='create_branch_menu'),
     path('manager_penal/delete_branch_menu/<int:pk>/', DeleteBranchMenu.as_view(), name='delete_branch_menu'),
     path('manager_penal/delete_branch_menu/<int:pk>/', DeleteBranchMenu.as_view(), name='delete_branch_menu'),
-    path('manager_penal/view_orders/<int:pk>/', ViewOrders.as_view(), name='delete_branch_menu'),
+    path('manager_penal/view_orders/<int:pk>/', ManagerViewOrders.as_view(), name='manager_view_orders'),
+    path('manager_penal/update_orders/<int:pk>/', ManagerUpdateOrders.as_view(), name='manager_update_orders'),
+    path('manager_penal/view_orderitems/<int:pk>/', ManagerViewOrderItems.as_view(), name='manager_view_orderitems'),
 
 
     path('foods/<int:pk>/', Foods.as_view(), name='foods'),
 
 
 ]
-
-
 
 urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

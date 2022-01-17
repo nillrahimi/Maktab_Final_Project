@@ -13,7 +13,7 @@
                 <form method="POST">
                     {% csrf_token %}
                     {{form.as_p}}
-                    <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                    <button type="submit" class="btn btn-success btn-sm">Save Changes</button>
                     <a href="{% url 'customer_panel' %}"  class="btn btn-sm">Close</button>
                 </form>
             </div>

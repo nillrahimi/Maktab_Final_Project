@@ -7,19 +7,19 @@
       <div class="row justify-content-center">
         {% if object_list %}
         {% for address in object_list %}
-        <div class="col-xs-12 col-sm-8 border" Style="background-color:#E5E7E9;">
-          <div class="features-item">
-              <h3>{{address.city}}, {{address.street}}, {{address.plaque}}, {{is_primary}}</h3>
-              <hr>
-              <div>
-                {% if not address.is_primary %}
-                <a href="{% url 'customer_delete_address' address.pk%}" class="btn btn-danger btn-sm">Delete</a>
-                {% endif %}
-                <a href="{% url 'customer_edit_address' address.pk %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Edit</a>   
+          <div class="col-xs-12 col-sm-8 border" Style="background-color:#E5E7E9;">
+            <div class="features-item">
+                <h3>{{address.city}}, {{address.street}}, {{address.plaque}}, {{is_primary}}</h3>
+                <hr>
+                <div>
+                  {% if not address.is_primary %}
+                  <a href="{% url 'customer_delete_address' address.pk%}" class="btn btn-danger btn-sm">Delete</a>
+                  {% endif %}
+                  <a href="{% url 'customer_edit_address' address.pk %}" class="btn btn-secondary btn-sm" Style="background-color:#2980B9;">Edit</a>   
+                </div>
+                <br>      
               </div>
-              <br>      
-            </div>
-        </div>
+          </div>
         {% endfor %}
         {% endif %}
       </div>

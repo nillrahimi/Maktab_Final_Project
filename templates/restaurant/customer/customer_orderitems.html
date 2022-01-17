@@ -15,6 +15,7 @@
                 <li class="list-group-item" style="color:#556b2f;"> Date: {{order.created_time}}</li>
                 <li class="list-group-item" style="color:#556b2f;">Number: {{orderitem.number}}</li>
                 <li class="list-group-item" style="color:#556b2f;">Price per Number: {{orderitem.menu.price}}</li>
+                <li class="list-group-item" style="color:#556b2f;">Total Price: {{orderitem.get_total_price}}</li>
             </ul>
             {% endfor %}
             </div>

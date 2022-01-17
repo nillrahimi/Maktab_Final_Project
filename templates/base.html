@@ -31,12 +31,8 @@
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" /> <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"> </script> <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
     
-    
     <title>Online Restaurant</title>
-
 </head>
-
-
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
   <nav id="menu" class="navbar navbar-default navbar-fixed-top">
     <div class="container"> 
@@ -63,13 +59,8 @@
           {% else %}
           <li><a href="{% url 'signup_base' %}" class="page-scroll">Sign Up</a></li>
           <li><a href="{% url 'account_login' %}" class="page-scroll">Login</a></li>
-          
           {% endif %}
-
-
         </ul>
-
-
       </div>
       <!-- /.navbar-collapse --> 
     </div>
@@ -79,20 +70,9 @@
   <div class="intro">
     <div class="overlay">
       <div class="container">
-
         <div class="row">
-
           <div class="intro-text ">
             <h1>Online Restaurant</h1>
-
-            
-            <div class="row">
-              <div class="col-md-3">
-
-
-              </div>
-            </div>
-
             <br>
             <br>
           </div>
@@ -103,20 +83,11 @@
 </header>
 
   <div class="container">
-    
     {% block section %}{% endblock section %}
     {% block section2 %}{% endblock section2 %}
     {% block form %}{% endblock form %}
-
-    <div class="container">
-    <br>
     {% block content %}{% endblock content %}
-    </div>
   </div>
-{% comment %} </div>   {% endcomment %}
-
-
-
 
 <!-- Gallery Section -->
 <div id="gallery">
@@ -205,20 +176,6 @@
   document.cookie ='device=' + device + ";domain=;path=/"
 </script>
 
-
-{% comment %} <script>
-  $(document).ready(function(){ 
-      $("#txtSearch").autocomplete({
-          source: "/search/",
-          minLength: 2,
-          open: function(){
-              setTimeout(function () {
-                  $('.ui-autocomplete').css('z-index', 99);
-              }, 0);
-          }
-        });
-  });
-</script> {% endcomment %}
 {% block script %}{% endblock script %}
 
 </body>

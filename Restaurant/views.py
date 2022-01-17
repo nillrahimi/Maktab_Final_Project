@@ -56,7 +56,6 @@ class Home(ListView, APIView):
     def post(self, request):
         if request.method == 'POST'  and request.is_ajax():
             text = request.POST.get('search_input')
-            print(text)
             if text :
                 branch = Branch.objects.filter(name__contains=text)
                 food = Food.objects.filter(name__contains=text)
@@ -76,7 +75,6 @@ class Home(ListView, APIView):
                 Response({"branches":[] , "foods":[],"msg":"does not match"})
               
         return render(request,'home.html')   
-
 
 class Foods(ListView):
     model = Food
@@ -139,6 +137,7 @@ def cart(request):
     if request.method == "POST":
 
         customer = request.user
+        print("hooooraaaaa", type(customer) ,customer)
         status = OrderStatus.objects.get(status = "ordered")
         new_status = OrderStatus.objects.get(status = "paid")
         order= Order.objects.filter(customer=customer, order_status =status).update(order_status=new_status)
@@ -146,24 +145,6 @@ def cart(request):
         return render(request,'restaurant/cart.html',{"msg":msg})
 
 
-
-        # device = request.COOKIES['device']
-        # status = OrderStatus.objects.get(order_status = "ordered")
-        
-    # if request.user.is_authenticated:
-        # customer = Customer.objects.get(device=device, username = device)
-        # if customer:    
-        #     order = Order.objects.get(customer=customer, order_status =status)
-        #     if order :
-        #         order_items_device = OrderItem.objects.filter(order= order.id)
-        #         if order_items_device:
-        #             branch_order_item_device= Branch.objects.get(menu_menu_orderitem_order = order_items_device.last().order)
-        #             print(branch_order_item_device)
-
-
-        # customer_address = request.POST.get("customer_address")
-        # pk,city,street,number =customer_address.split(",")
-        # choosen_address = Address.objects.get(pk = pk)
 
     if request.user.is_authenticated :
         addresses = Address.objects.filter(customer = request.user)
@@ -194,11 +175,6 @@ def cart(request):
 
     context = {'order':order, "addresses":addresses}
     return render(request, 'restaurant/cart.html', context)
-
-
-
-
-
 
 
 
@@ -290,6 +266,7 @@ class CustomerOrders(ListView):
     def get_queryset(self, *args, **kwargs):
         return Order.objects.filter(customer = self.kwargs['pk']) 
 
+
 @customer_required()
 class CustomerOrderItems(ListView):
     model = OrderItem
@@ -324,12 +301,12 @@ class CustomerAddAddress(CreateView):
     form_class = AddNewAddressForm
     success_url = reverse_lazy('customer_panel')
 
-    def form_valid(self, form):
-        customer = Customer.objects.get(pk = self.request.user.pk)
-        obj = form.save(commit=False)
-        obj.customer = customer
-        obj.save()
-        return redirect('customer_panel')
+    # def form_valid(self, form):
+    #     customer = Customer.objects.get(pk = self.request.user.pk)
+    #     obj = form.save(commit=False)
+    #     obj.customer = customer
+    #     obj.save()
+    #     return redirect('customer_panel')
 
 
 @customer_required()
@@ -392,7 +369,7 @@ class EditBranchMenu(UpdateView):
     model = Menu
     form_class = EditBranchMenu
     template_name = 'restaurant/manager/edit_branch_menu.html'   
-    success_url = reverse_lazy('view_branch_menu') 
+    success_url = reverse_lazy('manager_panel') 
 
 
 @manager_required()
@@ -420,13 +397,26 @@ class DeleteBranchMenu(DeleteView):
 
 
 
-@manager_required
-class ViewOrders(ListView):
+@manager_required()
+class ManagerViewOrders(ListView):
     model = Order
     template_name = 'restaurant/manager/manager_view_orders.html'
     def get_queryset(self, *args, **kwargs):
-        return Order.objects.filter( orderitem__menu_branch= self.kwargs['pk'])
+        return Order.objects.filter( orderitem__menu__branch__manager= self.kwargs['pk'])
 
+
+@manager_required()
+class ManagerUpdateOrders(UpdateView):
+    model = Order
+    template_name = 'restaurant/manager/manager_update_orders.html'
+    fields =("order_status",) 
+    success_url = reverse_lazy('manager_panel')
+
+
+@manager_required()
+class ManagerViewOrderItems(ListView):
+    model = OrderItem
+    template_name = 'restaurant/manager/manager_view_orderitems.html'
 
 
 
@@ -520,3 +510,16 @@ def signup_customer(request):
         return redirect('account_login')
 
     return render(request,"account/signup_customer.html")
+
+
+
+
+# def likePost(request):
+#         if  request.method=='POST' and request.is_ajax():
+#                post_id = request.GET['post_id']
+#                likedpost = Post.objects.get(pk=post_id) #getting the liked posts
+#                m = Like(post=likedpost) # Creating Like Object
+#                m.save()  # saving it to store in database
+#                return HttpResponse("Success!") # Sending an success response
+#         else:
+#                return HttpResponse("Request method is not a GET")

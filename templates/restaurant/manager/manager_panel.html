@@ -20,8 +20,11 @@
               <a class="btn btn-secondary  btn-sm" href="{% url 'view_branch_menu' user.pk %}" style="background-color:#2980B9;">View Branch Menu</a>
             </li>
             <li>
-              <a class="btn btn-secondary  btn-sm" style="background-color:#2980B9;" href="manager_view_orders">View Orders</a>
+              <a class="btn btn-secondary  btn-sm" style="background-color:#2980B9;" href="{% url 'manager_view_orders' user.pk %}">View Orders</a>
             </li>
+            {% comment %} <li>
+              <a class="btn btn-secondary  btn-sm" style="background-color:#2980B9;" href="{% url 'manager_view_orderitems' user.pk%}">View Order Items</a>
+            </li> {% endcomment %}
           </ul>
         </div>
         <div class="col-xs-12 col-sm-6">

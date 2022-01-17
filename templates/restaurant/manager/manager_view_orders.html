@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block section %}
+<div class="section-title text-center">
+    <h2>Your Branch Orders Are:</h2>
+</div>
+
+<div id="features" class="text-center d-flex justify-content-center">
+    <div class="container">
+      <div class="row-cols-3 row-cols-md-3 m-2 d-flex flex-column align-items-center">
+    {% if object_list %}
+    {% for order in  object_list %}
+        <div class="col m-3">
+          <div class="card">
+            <div class="card-body">
+              <h3>{{order.created_time}}</h3>
+            </div>
+            <div class="card-footer">
+              <a href="{% url 'manager_update_orders' order.pk%}" class="btn btn-secondary btn-sm">Status : {{order.order_status}}</a>  
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+    {% else%}
+        <div class="col">
+        <div class="card">
+            <div class="card-body">
+            <h3>No Orders Yet!</h3>
+            </div>
+        </div>
+        </div>
+    
+{% endif %}
+  </div>
+</div>
+</div>
+
+{% endblock section %}

@@ -37,6 +37,11 @@ class Branch(models.Model):
     #             pass
     #     super(Branch, self).save(*args, **kwargs)
 
+    @property 
+    def created_at_jalali(self):
+        converted = jdatetime.datetime.fromgregorian(datetime= self.created_time)
+        return f'{converted.year}/{converted.month}/{converted.day} - {converted.hour}:{converted.minute}'
+
 
 class MealCategory(models.Model):
     name = models.CharField( max_length=50)
@@ -55,6 +60,11 @@ class Food(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property 
+    def created_at_jalali(self):
+        converted = jdatetime.datetime.fromgregorian(datetime= self.created_time)
+        return f'{converted.year}/{converted.month}/{converted.day} - {converted.hour}:{converted.minute}'
 
 
 
@@ -94,10 +104,15 @@ class OrderItem(models.Model):
         return f"Order: {self.id} From: {self.order}"
 
     @property
-    def get_total(self):
-        foodname = Food.objects.filter(food_menu__menu_orderitem_id=self.id).values_list('food_name')[0][0]
-        total = int(Menu.objects.filter(orderitems__order=self.order).filter(food__food_name=foodname).values_list("price")[0][0]) * self.number
-        return total
+    def get_total_price(self):
+        menu_price = Menu.objects.filter(id=self.menu.id).values_list("price")[0][0]
+
+        return menu_price * self.number
+
+    @property 
+    def created_at_jalali(self):
+        converted = jdatetime.datetime.fromgregorian(datetime= self.created_time)
+        return f'{converted.year}/{converted.month}/{converted.day} - {converted.hour}:{converted.minute}'
     
 
 class Order(models.Model):
@@ -110,13 +125,16 @@ class Order(models.Model):
 
     @property
     def get_cart_total(self):
-        orderitems = OrderItem.objects.all().filter(order=self.id)
-        total = sum([item.get_total for item in orderitems])
-        return total 
+        orderitems = OrderItem.objects.filter(order=self.id)
+        if orderitems:
+            return sum([item.get_total_price for item in orderitems]) 
+        else:
+            return 0
 
     @property 
     def created_at_jalali(self):
-        return jdatetime.datetime.fromgregorian(datetime= self.created_time)
+        converted = jdatetime.datetime.fromgregorian(datetime= self.created_time)
+        return f'{converted.year}/{converted.month}/{converted.day} - {converted.hour}:{converted.minute}'
 
 
         

@@ -36,20 +36,6 @@
         </div>
       </div>
       {% endfor %}
-      {% comment %} <div class="col-xs-12 col-sm-4">
-        <div class="features-item">
-          <h3>Consectetur adipiscing</h3>
-          <img src="img/specials/2.jpg" class="img-responsive" alt="">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sed commodo.</p>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <div class="features-item">
-          <h3>Duis sed dapibus</h3>
-          <img src="img/specials/3.jpg" class="img-responsive" alt="">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sed commodo.</p>
-        </div>
-      </div> {% endcomment %}
     </div>
   </div>
 </div>
@@ -61,31 +47,16 @@
     <div class="section-title">
       <h2>Most Popular Foods</h2>
     </div>
-    
     <div class="row">
       {% for food in most_sold_foods %}
       <div class="col-xs-12 col-sm-4">
         <div class="features-item">   
           <h3>{{food.name}}</h3>
-          <img src="{{food.image.url}}"  class="img-responsive" alt="{{food.name}}">
+          <img src="{{food.image.url}}"  class="img-responsive" alt="{{food.name}}" style="height:30vh;">
           <p>{{food.food_menu.branch}}</p>
         </div>
       </div>
       {% endfor %}
-      {% comment %} <div class="col-xs-12 col-sm-4">
-        <div class="features-item">
-          <h3>Consectetur adipiscing</h3>
-          <img src="img/specials/2.jpg" class="img-responsive" alt="">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sed commodo.</p>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <div class="features-item">
-          <h3>Duis sed dapibus</h3>
-          <img src="img/specials/3.jpg" class="img-responsive" alt="">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sed commodo.</p>
-        </div>
-      </div> {% endcomment %}
     </div>
   </div>
 </div>
