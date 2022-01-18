@@ -10,16 +10,18 @@
       <div class="row-cols-3 row-cols-md-3 m-2 d-flex flex-column align-items-center">
     {% if object_list %}
     {% for order in  object_list %}
+      {% if order.order_status != "ordered" %}
         <div class="col m-3">
           <div class="card">
             <div class="card-body">
-              <h3>{{order.created_time}}</h3>
+              <h4>{{order.created_at_jalali}}</h4>
             </div>
             <div class="card-footer">
               <a href="{% url 'manager_update_orders' order.pk%}" class="btn btn-secondary btn-sm">Status : {{order.order_status}}</a>  
             </div>
           </div>
         </div>
+      {% endif %}
     {% endfor %}
     {% else%}
         <div class="col">

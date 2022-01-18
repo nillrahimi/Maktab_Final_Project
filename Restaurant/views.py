@@ -1,3 +1,4 @@
+from dataclasses import field
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.db import reset_queries
@@ -137,11 +138,20 @@ def cart(request):
     if request.method == "POST":
 
         customer = request.user
-        print("hooooraaaaa", type(customer) ,customer)
         status = OrderStatus.objects.get(status = "ordered")
         new_status = OrderStatus.objects.get(status = "paid")
-        order= Order.objects.filter(customer=customer, order_status =status).update(order_status=new_status)
-        msg = "Successfull"
+
+        order= Order.objects.filter(customer=customer, order_status =status)
+        orderId = order.values_list('id')[0][0]
+
+        orderitems = OrderItem.objects.filter(order=orderId)
+
+        for orderitem in orderitems:
+            Menu.objects.filter(id = orderitem.menu.id).update(remaining = orderitem.menu.remaining - orderitem.number)
+       
+        order.update(order_status=new_status)
+
+        msg = "Order Confirmed!"
         return render(request,'restaurant/cart.html',{"msg":msg})
 
 
@@ -298,15 +308,16 @@ class CustomerViewAddress(ListView):
 class CustomerAddAddress(CreateView):
     model = Address
     template_name = 'restaurant/customer/customer_add_address.html'
-    form_class = AddNewAddressForm
+    # form_class = AddNewAddressForm
+    fields = "__all__"
     success_url = reverse_lazy('customer_panel')
 
-    # def form_valid(self, form):
-    #     customer = Customer.objects.get(pk = self.request.user.pk)
-    #     obj = form.save(commit=False)
-    #     obj.customer = customer
-    #     obj.save()
-    #     return redirect('customer_panel')
+    def form_valid(self, form):
+        customer = Customer.objects.get(pk = self.request.user.pk)
+        obj = form.save(commit=False)
+        obj.customer = customer
+        obj.save()
+        return redirect('customer_panel')
 
 
 @customer_required()
@@ -351,7 +362,8 @@ class ViewBranchInfo(ListView):
 class EditBranchInfo(UpdateView):
     model = Branch
     template_name = 'restaurant/manager/edit_branch_info.html'    
-    form_class = EditBranchInformation
+    # form_class = EditBranchInformation
+    fields = "__all__"
     success_url = reverse_lazy('view_branch_info')
 
 
@@ -368,6 +380,7 @@ class ViewBranchMenu(ListView):
 class EditBranchMenu(UpdateView):
     model = Menu
     form_class = EditBranchMenu
+
     template_name = 'restaurant/manager/edit_branch_menu.html'   
     success_url = reverse_lazy('manager_panel') 
 

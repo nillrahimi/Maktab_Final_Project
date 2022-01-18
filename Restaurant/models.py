@@ -26,6 +26,19 @@ class Branch(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+            if self.is_primary:
+                if Branch.objects.filter(is_primary=True,manager = self.manager):
+                    Branch.objects.filter(is_primary=True,manager = self.manager).update(is_primary = False)  
+            
+            else:
+                if Branch.objects.filter(is_primary=True,manager = self.manager):
+                    pass
+                else:
+                    first_address = Branch.objects.filter(manager = self.manager).first()
+                    Branch.objects.filter(manager = first_address.manager).update(is_primary = True)  
+
+            super(Branch, self).save(*args, **kwargs)
     # def save(self, *args, **kwargs):
     #     if self.is_primary:
     #         try:
@@ -50,7 +63,6 @@ class MealCategory(models.Model):
 
 
 class Food(models.Model):
-    
     name = models.CharField(max_length=50)
     type_category = models.ForeignKey(TypeCategory, on_delete=models.CASCADE,related_name = "typecategory_food")
     meal_category = models.ManyToManyField(MealCategory,related_name = "mealcategory_food" )
@@ -95,7 +107,7 @@ class OrderStatus(models.Model):
 
 
 class OrderItem(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='menu_orderitem')
+    menu = models.ForeignKey(Menu, on_delete=models.DO_NOTHING, related_name='menu_orderitem')
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     number = models.IntegerField()
     created_time = models.DateTimeField(auto_now_add=True)
@@ -119,6 +131,7 @@ class Order(models.Model):
     order_status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, related_name='orderstatus_order')
     customer = models.ForeignKey("accounts.Customer", on_delete=models.CASCADE,related_name = "customer_order")
     created_time = models.DateTimeField(auto_now_add=True)
+    address = models.ForeignKey('Address', on_delete=models.DO_NOTHING, null= True, blank=True)
     
     def __str__(self):
         return '{} {}'.format(self.customer ,self.order_status)
@@ -144,12 +157,25 @@ class Address(models.Model):
     street = models.CharField(max_length=50)
     alley =  models.CharField(max_length=50)
     number = models.IntegerField()
-    customer = models.ManyToManyField('accounts.Customer', related_name='customer_address')
+    customer = models.ForeignKey('accounts.Customer',on_delete=models.CASCADE,  related_name='customer_address')
     is_primary = models.BooleanField(default=False)
 
     def __str__(self):
         return '{} {}'.format(self.street ,self.customer)
 
+    def save(self, *args, **kwargs):
+            if self.is_primary:
+                if Address.objects.filter(is_primary=True,customer = self.customer):
+                    Address.objects.filter(is_primary=True,customer = self.customer).update(is_primary = False)  
+            
+            else:
+                if Address.objects.filter(is_primary=True,customer = self.customer):
+                    pass
+                else:
+                    first_address =  Address.objects.filter(customer = self.customer).first()
+                    Address.objects.filter(customer = first_address.customer).update(is_primary = True)  
+
+            super(Address, self).save(*args, **kwargs)
     # def save(self, *args, **kwargs):
     #     if self.is_primary:
     #         try:

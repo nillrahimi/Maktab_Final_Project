@@ -5,8 +5,8 @@
     <form method = 'POST'>
         {% csrf_token %}
         {{form.as_p}}
-        <button type="submit" class="btn btn-success">Submit</button>
-        <a href="{% url 'manager_panel' %}" class="btn btn-secondary">close</a>
+        <button type="submit" class="btn btn-success btn-sm">Submit</button>
+        <a href="{% url 'manager_panel' %}" class="btn btn-secondary btn-sm">close</a>
     </form>
 <br>    
 {% endblock content %}
