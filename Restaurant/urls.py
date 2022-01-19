@@ -33,7 +33,7 @@ urlpatterns = [
     path('customer_panel/delete_address/<int:pk>/', CustomerDeleteAddress.as_view(), name='customer_delete_address'),
 
     path('customer_panel/orders/<int:pk>', CustomerOrders.as_view(), name='customer_orders'),
-    path('customer_panel/orderitems/<int:pk>', CustomerOrderItems.as_view(), name='customer_orderitems'),
+    path('customer_panel/orderitems/search_result_menu<int:pk>', CustomerOrderItems.as_view(), name='customer_orderitems'),
 
     path('manager_penal/', ManagerPanel.as_view(), name='manager_panel'), 
     path('manager_penal/edit_manager_info/<int:pk>/', EditManagerInfo.as_view(), name='edit_manager_info'), 
@@ -49,8 +49,7 @@ urlpatterns = [
     path('manager_penal/update_orders/<int:pk>/', ManagerUpdateOrders.as_view(), name='manager_update_orders'),
     path('manager_penal/view_orderitems/<int:pk>/', ManagerViewOrderItems.as_view(), name='manager_view_orderitems'),
 
-
-    path('foods/<int:pk>/', Foods.as_view(), name='foods'),
+    path('search_result_menu/<int:pk>/', SearchResultMenu.as_view(), name='search_result_menu'),
 
 
 ]
