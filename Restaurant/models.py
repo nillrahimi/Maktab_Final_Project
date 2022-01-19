@@ -27,28 +27,19 @@ class Branch(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-            if self.is_primary:
-                if Branch.objects.filter(is_primary=True,manager = self.manager):
-                    Branch.objects.filter(is_primary=True,manager = self.manager).update(is_primary = False)  
-            
+        primary_branch = Branch.objects.filter(is_primary=True, manager = self.manager)
+        if self.is_primary:
+            if primary_branch:
+                primary_branch.update(is_primary = False)  
+        
+        else:
+            if primary_branch and primary_branch.values_list('id')[0][0] != self.id:
+                pass
             else:
-                if Branch.objects.filter(is_primary=True,manager = self.manager):
-                    pass
-                else:
-                    first_address = Branch.objects.filter(manager = self.manager).first()
-                    Branch.objects.filter(manager = first_address.manager).update(is_primary = True)  
+                self.is_primary = True
 
-            super(Branch, self).save(*args, **kwargs)
-    # def save(self, *args, **kwargs):
-    #     if self.is_primary:
-    #         try:
-    #             temp = Branch.objects.get(is_primary=True)
-    #             if self != temp:
-    #                 self.is_primary = False
-    #                 self.save()
-    #         except Branch.DoesNotExist:
-    #             pass
-    #     super(Branch, self).save(*args, **kwargs)
+        super(Branch, self).save(*args, **kwargs)
+
 
     @property 
     def created_at_jalali(self):
@@ -149,6 +140,13 @@ class Order(models.Model):
         converted = jdatetime.datetime.fromgregorian(datetime= self.created_time)
         return f'{converted.year}/{converted.month}/{converted.day} - {converted.hour}:{converted.minute}'
 
+    @property
+    def isDelivered(self):
+        return self.order_status.__str__() == 'delivered'
+    
+    @property
+    def isNotOrdered(self):
+        return self.order_status.__str__() != 'ordered'
 
         
 
@@ -164,16 +162,17 @@ class Address(models.Model):
         return '{} {}'.format(self.street ,self.customer)
 
     def save(self, *args, **kwargs):
+            primary_address = Address.objects.filter(is_primary=True,customer = self.customer)
+
             if self.is_primary:
-                if Address.objects.filter(is_primary=True,customer = self.customer):
-                    Address.objects.filter(is_primary=True,customer = self.customer).update(is_primary = False)  
+                if primary_address:
+                    primary_address.update(is_primary = False)  
             
             else:
-                if Address.objects.filter(is_primary=True,customer = self.customer):
+                if primary_address and primary_address.values_list('id')[0][0] != self.id:
                     pass
                 else:
-                    first_address =  Address.objects.filter(customer = self.customer).first()
-                    Address.objects.filter(customer = first_address.customer).update(is_primary = True)  
+                    self.is_primary = True
 
             super(Address, self).save(*args, **kwargs)
     # def save(self, *args, **kwargs):
