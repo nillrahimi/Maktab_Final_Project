@@ -33,6 +33,18 @@ class AddressAdmin(admin.ModelAdmin):
     empty_value_display = '---'
     list_per_page = 5
 
+    fieldsets = (
+        (None, {
+            "fields": (
+                'city','street','number','is_primary',
+            ),
+        }),
+        ("Relation Fields",{
+              "fields": ('customer',
+            ),
+        }),
+    )
+
 @admin.register(Restaurant)
 class RestaurantAdmin(admin.ModelAdmin):
     list_display = ['name']
@@ -42,6 +54,9 @@ class RestaurantAdmin(admin.ModelAdmin):
     search_fields = ['name']
     empty_value_display = '---'
     list_per_page = 5
+
+class MenuInline(admin.TabularInline):
+    model = Menu
 
 @admin.register(Branch)
 class BranchAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
@@ -53,9 +68,30 @@ class BranchAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     # date_hierarchy = 'created_time'
     empty_value_display = '---'
     list_per_page = 5
+
+    inlines = [
+        MenuInline,
+    ]
+
+    fieldsets = (
+        (None, {
+            "fields": (
+                'name','city','address','is_primary',
+            ),
+        }),
+        ("Relation Fields",{
+              "fields": ('restaurant','manager','type_category',
+            ),
+        }),
+    )
+
     def created_time_jalali(self, obj):
         return datetime2jalali(obj.created_time).strftime('%y/%m/%d _ %H:%M:%S')
 
+
+
+class MenuInline(admin.TabularInline):
+    model = Menu
 
 @admin.register(Food)
 class FoodAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
@@ -67,6 +103,11 @@ class FoodAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     # date_hierarchy = 'created_time'
     empty_value_display = '---'
     list_per_page = 5
+    
+    inlines = [
+        MenuInline,
+    ]
+
     def created_time_jalali(self, obj):
         return datetime2jalali(obj.created_time).strftime('%y/%m/%d _ %H:%M:%S')
 
@@ -80,6 +121,18 @@ class MenuAdmin(admin.ModelAdmin):
     search_fields = ['branch', 'food']
     empty_value_display = '---'
     list_per_page = 5
+
+    fieldsets = (
+        (None, {
+            "fields": (
+                'price','remaining',
+            ),
+        }),
+        ("Relation Fields",{
+              "fields": ('branch','food',
+            ),
+        }),
+    )
 
 
 @admin.register(OrderStatus)
@@ -112,4 +165,3 @@ class Order(admin.ModelAdmin):
     # search_fields = ['street']
     empty_value_display = '---'
     list_per_page = 5
-
