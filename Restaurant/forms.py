@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import *
 from accounts.models import *
+from django.db.models import Q, fields
 
 
 class AdminPanelForm(forms.ModelForm):
@@ -94,3 +95,20 @@ class CreateBranchMenu(forms.ModelForm):
         fields = ('food', 'remaining',  'price',)
 
 
+class OrderStatusForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = [
+            'order_status',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        sent = OrderStatus.objects.get(status = "sent")
+        delivered = OrderStatus.objects.get(status = "delivered")
+        paid = OrderStatus.objects.get(status = "paid")
+        super(OrderStatusForm, self).__init__(*args, **kwargs)
+
+        if self.instance.order_status == paid:
+            self.fields['order_status'].queryset = OrderStatus.objects.filter(Q(status  = "delivered")| Q(status ='sent'))
+        if self.instance.order_status == sent:
+            self.fields['order_status'].queryset = OrderStatus.objects.filter(status  = "delivered")
