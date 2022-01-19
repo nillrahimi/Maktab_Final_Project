@@ -4,20 +4,20 @@
 {% block content %}
 <div id="features" class="text-center">
   <div class="container">
-    <div class="row-cols-3 row-cols-md-3 m-2 d-flex flex-column align-items-center">
+    <div class="row justify-content-center m-2">
 
       {% if not user.is_authenticated %}
-      <h2>Your Cart</h2>
+        <h2>Your Cart</h2>
       {% endif %}
 
       {% if user.is_authenticated %}
-      <h2>{{user.username}}'s Cart</h2>
+        <h2>{{user.username}}'s Cart</h2>
       {% endif %}
 
       
       {% if order.orderitem_set.all %}
         {% for orderitem in order.orderitem_set.all %}
-            <div class="col">
+            <div class="col-12 col-sm-4">
               <div class="card h-100  bg-dark text-light">
                 <img src="{{orderitem.menu.food.image.url}}" class="card-img-top" alt="{{orderitem.menu.food.name}}" style="height:30vh;">
                 <div class="card-body">
@@ -43,7 +43,9 @@
                 </div>
               </div>
             </div>
-        {% endfor %}
+          
+          {% endfor %}
+
         {% if user.is_authenticated %}
           <form method="POST">
             {% csrf_token %}
@@ -54,8 +56,10 @@
                 {% endfor %}
               </select></p>
             <button class="btn btn-success btn-sm" type="submit">Confirm Card</button>
+            <br/>
+            <br/>
           </form>
-      {% else %}
+        {% else %}
         <div class="card-body">
           <p>Please Login First: </p>
           <a class="btn btn-success btn-sm" href="{% url 'account_login' %}" class="btn btn-success">Login</a>
@@ -69,8 +73,13 @@
           {% endif %}
         {% endif %}
 
+      <br>
       
-
+      {% for orderitem in order.orderitem_set.all %}
+      {% if forloop.counter0 == 0 %}
+        <a href="{% url 'menu_list' orderitem.menu.pk %}" class="btn btn-secondary btn-sm" style="max-width: 160px;">Back To Menu</a>
+      {% endif %}
+      {% endfor %}
 
       {% if msg %}
       <p>{{msg}}</p>

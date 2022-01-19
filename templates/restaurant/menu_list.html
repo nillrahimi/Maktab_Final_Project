@@ -9,7 +9,7 @@
     <div class="row">
       {% for menu in  object_list %}
       {% if  menu.remaining > 0%}
-      <div class="col-xs-12 col-sm-4  border">
+      <div class="col-xs-12 col-sm-4 border">
         <div class="features-item">
           <h3>{{menu.food.name}}</h3>
           <img src= {{menu.food.image.url}}  class="img-responsive "  alt="{menu.food.name}}">

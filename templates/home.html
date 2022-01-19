@@ -12,7 +12,7 @@
     <button class="btn btn-custom btn-sm formsearch" type="button">Search</button>
   </div>
   
-  <div id="searchbar_result" class="menu-item-name" style="display:none; text-align: center">
+  <div id="searchbar_result" class="menu-item-name" style="display:none; text-align: center;">
     <p>Restaurants List Matching Your Search: </p>
     <ul id="branch_ul" class="p-0"></ul>
     <p>Foods List Matching Your Search: </p>
@@ -54,6 +54,7 @@
           <h3>{{food.name}}</h3>
           <img src="{{food.image.url}}"  class="img-responsive" alt="{{food.name}}" style="height:30vh;">
           <p>{{food.food_menu.branch}}</p>
+          <a class="btn btn-success btn-sm m-3" href="{% url 'search_result_menu' food.id %}">View All Restaurants</a>
         </div>
       </div>
       {% endfor %}
