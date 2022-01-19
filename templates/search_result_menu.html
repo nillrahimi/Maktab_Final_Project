@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block section %}
+
+<div id="features" class="text-center">
+    <h3 style="font-weight: medium;">Menus Matching Your Search:</h3>
+    <div class="container">
+        <div class="row justify-content-center">
+            {% for menu in  object_list %}
+                <div class="col-xs-12 col-sm-4 border m-3">
+                    <div class="features-item">
+                        <img src="{{menu.food.image.url}}" style="height: 30vh;" class="img-responsive" alt="...">
+                        <p class="card-title">Restaurant:{{menu.branch}}</p>  
+                        <p class="card-title">{{menu.food}}</p>
+                        <p class="card-title">Price: {{menu.price}}</p>
+                        <p class="card-title">Remaining: {{menu.remaining}}</p>
+                        <a class="btn btn-success btn-sm m-3" href="{% url 'menu_list' menu.id %}">View Menu Of Restaurant</a>
+                    </div>
+                </div> 
+            {% endfor %}
+        </div>
+        <a class="btn btn-secondary btn-sm m-3" href="{% url 'home'%}">Back to Home Page</a>
+    </div>
+</div>
+
+{% endblock section%}
