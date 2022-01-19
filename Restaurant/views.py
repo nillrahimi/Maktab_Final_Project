@@ -77,23 +77,37 @@ class Home(ListView, APIView):
               
         return render(request,'home.html')   
 
-class Foods(ListView):
-    model = Food
-    template_name = 'restaurant/foods.html'    
+# class Foods(ListView):
+    # model = Food
+    # template_name = 'restaurant/foods.html'    
+    # def get_queryset(self, *args, **kwargs):
+    #     return Food.objects.filter( name = self.kwargs['pk']) 
+
+# class SearchResultMenu(ListView):
+#     model = Menu 
+#     template_name = "search_result_menu.html"
+#     def get_queryset(self, *args, **kwargs):
+#         return Menu.objects.filter(food=self.kwargs['pk'])
+
+class SearchResultMenu(ListView):
+    model = Menu
+    template_name = "search_result_menu.html"
     def get_queryset(self, *args, **kwargs):
-        return Food.objects.filter( name = self.kwargs['pk']) 
+        return Menu.objects.filter(food = self.kwargs['pk'])
 
 
 #Handling Card__________________________________________________________________________________________________________
 def items(request, pk):
     menu = Menu.objects.get(id = pk)
     chosen_branch = menu.branch
-    chosen_food = menu.food
+    chosen_number = 1
+    existed_food = ''
     existed_branch = ''
-    existed_orderitem=''
+    existed_orderitems = ''
+
     if request.method == "POST":
-        menu = Menu.objects.get(id = pk)
-        chosen_branch = menu.branch
+        chosen_number = int(request.POST['number'])
+
         if request.user.is_authenticated :
             customer = request.user
         else:    
@@ -101,35 +115,44 @@ def items(request, pk):
             customer, created = Customer.objects.get_or_create(device=device, username = device)
         
         status = OrderStatus.objects.get(status = "ordered")
-        orders = Order.objects.filter(Q(customer=customer)& Q(order_status=status)).last()
+        order = Order.objects.get(Q(customer=customer) & Q(order_status=status))
         
-        if orders:
-            existed_orderitem = OrderItem.objects.filter(order=orders).last()
+        if order:
+            existed_orderitems = OrderItem.objects.filter(order=order).values_list()
 
-        if existed_orderitem :
-            existed_food = Food.objects.filter(food_menu__menu_orderitem=existed_orderitem)
-            existed_branch = Branch.objects.get(menu__menu_orderitem =existed_orderitem)
+        if existed_orderitems:
+            existed_branch = Branch.objects.get(menu = existed_orderitems[0][1])
 
-            if chosen_food in existed_food:
-                context = {'food':menu, 'message':"This Food Already Exist!"}
-                return render(request,'restaurant/menu_to_card.html',context)
+        print(menu)
+        print(existed_branch)
+        print(type(existed_branch))
+        print(chosen_branch.name)
 
         if existed_branch and not chosen_branch.name == existed_branch.name:
             context = {'food':menu, 'message':"Please either Choose from One Branch Or Make Your Card Empty First"}
             return render(request,'restaurant/menu_to_card.html',context)
-        
         else:
-            if menu.remaining >= int(request.POST['number']) :
-                status = OrderStatus.objects.get(status = "ordered")
-                order, created = Order.objects.get_or_create(customer = customer, order_status =status)
-                
-                orderItem, created = OrderItem.objects.get_or_create(order=order, number=1 , menu=menu)
-                orderItem.number = request.POST['number']
-                orderItem.save()
-                return redirect('cart')
+            for orderItem in existed_orderitems:
+                if orderItem[1] == menu.id:
+                    existed_food = orderItem
+                    break
+
+            if existed_food:
+                if menu.remaining >= chosen_number + existed_food[3]:
+                    OrderItem.objects.filter(id = existed_food[0]).update(number = existed_food[3] + chosen_number)
+                    return redirect('cart')
+                else:
+                    context = {'food':menu, 'message': 'This Branch Has Not Enough Foods'}
+                    return render(request,'restaurant/menu_to_card.html',context)
             else:
-                context = {'food':menu, 'message':'This Branch Has Not Enough Foods'}
-                return(request,'restaurant/menu_to_card.html',context)    
+                if menu.remaining >= chosen_number :
+                    orderItem, created = OrderItem.objects.get_or_create(order=order, number=chosen_number , menu=menu)
+                    orderItem.save()
+                    return redirect('cart')
+                else:
+                    context = {'food':menu, 'message': 'This Branch Has Not Enough Foods'}
+                    return render(request,'restaurant/menu_to_card.html',context)    
+        
     context = {'food':menu}
     return render(request,'restaurant/menu_to_card.html', context)
 
@@ -309,7 +332,7 @@ class CustomerAddAddress(CreateView):
     model = Address
     template_name = 'restaurant/customer/customer_add_address.html'
     # form_class = AddNewAddressForm
-    fields = "__all__"
+    fields = ("city", 'street', 'alley', 'number', 'is_primary', )
     success_url = reverse_lazy('customer_panel')
 
     def form_valid(self, form):
@@ -332,7 +355,8 @@ class CustomerDeleteAddress(DeleteView):
 class CustomerEditAddress(UpdateView):
     model = Address
     template_name = 'restaurant/customer/customer_edit_address.html'
-    form_class = AddNewAddressForm
+    # form_class = AddNewAddressForm
+    fields = "__all__"
     success_url = reverse_lazy('customer_panel')
 
 
@@ -364,7 +388,7 @@ class EditBranchInfo(UpdateView):
     template_name = 'restaurant/manager/edit_branch_info.html'    
     # form_class = EditBranchInformation
     fields = "__all__"
-    success_url = reverse_lazy('view_branch_info')
+    success_url = reverse_lazy('manager_panel')
 
 
 @manager_required()
@@ -422,7 +446,8 @@ class ManagerViewOrders(ListView):
 class ManagerUpdateOrders(UpdateView):
     model = Order
     template_name = 'restaurant/manager/manager_update_orders.html'
-    fields =("order_status",) 
+    # fields =("order_status",) 
+    form_class = OrderStatusForm
     success_url = reverse_lazy('manager_panel')
 
 
@@ -518,8 +543,8 @@ def signup_customer(request):
         customer = Customer(email = email , username = username, password = password1)
         customer.set_password(password1)
         customer.save()
-        address = Address.objects.create(city = city , street = street ,number = number, is_primary = True)
-        address.customer.add(customer)
+        address = Address.objects.create(city = city , street = street ,number = number, is_primary = True, customer = customer)
+        # address.customer.add(customer)
         return redirect('account_login')
 
     return render(request,"account/signup_customer.html")
