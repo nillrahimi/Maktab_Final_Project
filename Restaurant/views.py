@@ -77,17 +77,6 @@ class Home(ListView, APIView):
               
         return render(request,'home.html')   
 
-# class Foods(ListView):
-    # model = Food
-    # template_name = 'restaurant/foods.html'    
-    # def get_queryset(self, *args, **kwargs):
-    #     return Food.objects.filter( name = self.kwargs['pk']) 
-
-# class SearchResultMenu(ListView):
-#     model = Menu 
-#     template_name = "search_result_menu.html"
-#     def get_queryset(self, *args, **kwargs):
-#         return Menu.objects.filter(food=self.kwargs['pk'])
 
 class SearchResultMenu(ListView):
     model = Menu
@@ -122,11 +111,6 @@ def items(request, pk):
 
         if existed_orderitems:
             existed_branch = Branch.objects.get(menu = existed_orderitems[0][1])
-
-        print(menu)
-        print(existed_branch)
-        print(type(existed_branch))
-        print(chosen_branch.name)
 
         if existed_branch and not chosen_branch.name == existed_branch.name:
             context = {'food':menu, 'message':"Please either Choose from One Branch Or Make Your Card Empty First"}
