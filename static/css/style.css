@@ -473,3 +473,7 @@ color: #999;
 /* li.list-group-item a {
 color : inherit;
 } */
+
+#searchbar_result a {
+	font-weight: bold;
+}
