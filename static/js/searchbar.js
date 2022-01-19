@@ -10,15 +10,14 @@ $( document ).ready(function() {
             data={
                 'csrfmiddlewaretoken':CSRF_TOKEN,
                 'search_input':input_data
-                };
-                console.log(data)
+            };
+        
             $.ajax({
                 type: 'POST',
                 url: URL,
                 dataType: 'json',
                 data:data,
                 success: function(res) {
-                    console.log(res);
                     show_branches(res)
                 }
             });
@@ -32,13 +31,14 @@ $( document ).ready(function() {
             food_ul_tag.empty()
            
             var branch = data.branches;
-            var food = data.foods ;    
-           
-            if ( branch ){
+            var food = data.foods;
 
+            if(branch || food){
                 serachbar_div_tag.style.display = 'unset'
+            }
+           
+            if ( Array.isArray(branch) &&  branch.length > 0 ){
                 $.each(branch, function(i, branch){
-
                     var li = document.createElement("li");
                     var a = document.createElement("a");
                     var text = document.createTextNode(branch.name);
@@ -48,30 +48,27 @@ $( document ).ready(function() {
                     
                     li.append(a)
                     branch_ul_tag.append(li)
-                   
                 });
-
-            }else{
-                branch_ul_tag.append()
+            } 
+            else {
+                branch_ul_tag[0].innerText = 'Not Found!'
             }
-            if ( food ){
+            
+            if ( Array.isArray(food) &&  food.length > 0 ){
                 $.each(food, function(i, food){
                     var li = document.createElement("li");
                     var a = document.createElement("a");
                     var text = document.createTextNode(food.name);
                     
                     a.appendChild(text); 
-                    a.href = `http://127.0.0.1:8000/foods/${food.id}`;
+                    a.href = `http://127.0.0.1:8000/search_result_menu/${food.id}`;
+                    
                     li.append(a)
                     food_ul_tag.append(li)
-
-                   
                 });
-               
-                
-            }else{
-                food_ul_tag.append()
+            } 
+            else {
+                food_ul_tag[0].innerText = 'Not Found!'
             }
-            
         }
       });
